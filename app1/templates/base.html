@@ -1,0 +1,39 @@
+
+{% extends 'common.html' %}
+
+{% block content %}
+<style>
+
+body{
+	background-color: rgb(235, 227, 227);
+}
+.card {
+	  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+	  max-width: 300px;
+	  margin: auto;
+	  text-align: center;
+	  font-family: arial;
+	  background-color: white;
+	  
+	}
+	
+</style>
+
+<div>
+		<h3 style="">home page..</h3>
+		
+	  {% for i in data %} 
+	  <a href='{% url "productfilter1" i.id %}'>
+	  
+
+
+<div class="card">
+	<h2 style="text-align:center">{{i.categoryname}}</h2>
+    <img src="{{i.img.url}}"  style="width:100%"> 
+</div>
+</a>
+		{% endfor %}
+</div>
+
+{% endblock %}
+
