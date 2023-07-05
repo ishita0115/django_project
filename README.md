@@ -12,7 +12,16 @@ My project is an innovative online platform designed to facilitate the buying, s
 4. Forget and change password.
 5. contact us module for inquiry purpose.
 
-
+home page..
 ![image](https://github.com/ishita0115/django_project/assets/110026650/ef18af4b-9b6d-4cde-9b06-1c0fbc81da2f)
-
+sign up..
 ![image](https://github.com/ishita0115/django_project/assets/110026650/58773b84-05a7-4d06-95f9-77c014ad1774)
+product module..
+![image](https://github.com/ishita0115/django_project/assets/110026650/e71a6b17-81b2-4193-a71d-5ce799d52dd2)
+payment module..
+![image](https://github.com/ishita0115/django_project/assets/110026650/78b60ab5-7b33-4423-8d6e-54d8e21b9a73)
+contact us..
+![image](https://github.com/ishita0115/django_project/assets/110026650/45932334-3782-4735-aad0-d6ef99ac1191)
+
+
+
