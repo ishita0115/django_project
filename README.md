@@ -26,7 +26,7 @@ product module..
 
 
 payment module..
-![image](https://github.com/ishita0115/django_project/assets/110026650/41bccc06-b9aa-4756-88fe-361e0f8868d1)
+![image](https://github.com/ishita0115/django_project/assets/110026650/f8ea541a-8e28-479e-8daf-dfa8187f8185)
 
 
 contact us..
@@ -35,7 +35,4 @@ contact us..
 
 change password..
 ![image](https://github.com/ishita0115/django_project/assets/110026650/74dd6d66-2394-468d-954a-1d683c93a5b2)
-
-
-"C:\Users\Ishita\Desktop\internship\16.06.2023_20.48.38_REC.mp4"
 
