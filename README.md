@@ -16,17 +16,26 @@ My project is an innovative online platform designed to facilitate the buying, s
 home page..
 ![image](https://github.com/ishita0115/django_project/assets/110026650/ef18af4b-9b6d-4cde-9b06-1c0fbc81da2f)
 
+
 sign up..
 ![image](https://github.com/ishita0115/django_project/assets/110026650/58773b84-05a7-4d06-95f9-77c014ad1774)
+
 
 product module..
 ![image](https://github.com/ishita0115/django_project/assets/110026650/e71a6b17-81b2-4193-a71d-5ce799d52dd2)
 
+
 payment module..
-![image](https://github.com/ishita0115/django_project/assets/110026650/792a806d-a455-4135-8c74-b2b1b3963a58)
+![image](https://github.com/ishita0115/django_project/assets/110026650/bd07ed83-df84-403e-acd3-fe4fef0a8e52)
+
 
 contact us..
 ![image](https://github.com/ishita0115/django_project/assets/110026650/45932334-3782-4735-aad0-d6ef99ac1191)
 
 
+change password..
+![image](https://github.com/ishita0115/django_project/assets/110026650/74dd6d66-2394-468d-954a-1d683c93a5b2)
+
+
+"C:\Users\Ishita\Desktop\internship\16.06.2023_20.48.38_REC.mp4"
 
