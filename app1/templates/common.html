@@ -21,14 +21,23 @@
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<a class="navbar-brand" href="#">
+						
 					ArtShopy</a>
 			</div>
+			
 			<ul class="nav navbar-nav">
+		
 				<li ><a href="{% url 'index' %}">Home</a></li>
+		 		<li><a href="{% url 'contact'%}">contact_us</a></li>
+				 
+				{% if a %}
 				<li><a href="{% url 'productall' %}">product</a></li>
-		 		<li><a href="#">contact us</a></li>
-				<li><a href="#">about</a></li>
+				<li><a href="{% url 'change' %}">Change_password</a></li>
+				<li><a href="">My order</a></li>
+				<li><a href="{% url 'logout1' %}">Log out</a></li>
 			</ul>
+			
+			{% else %}
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="{% url 'register1' %}">
 					<span class="glyphicon glyphicon-user"></span>
@@ -37,14 +46,18 @@
 					<span class="glyphicon glyphicon-log-in"></span>
 					Login</a></li>
 			</ul>
+			{% endif %}
 		</div>
 	</nav>
-	     {% block content %}
-         
-         {% endblock %}
+	 
 
 </body>
 </html>
+
+{% block content %}
+         
+{% endblock %}
+
 
 
  

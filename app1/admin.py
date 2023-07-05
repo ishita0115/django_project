@@ -15,3 +15,9 @@ class userregister(admin.ModelAdmin):
     list_filter=['name','email','phone']
 
 admin.site.register(UserRegister,userregister)
+
+class contactdisplay(admin.ModelAdmin):
+    list_display=['name','email','phone']
+admin.site.register(Contactus,contactdisplay)
+
+admin.site.register(Ordermodel)

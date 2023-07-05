@@ -2,38 +2,99 @@
 {% extends 'common.html' %}
 
 {% block content %}
+{% load static  %}
+<link rel="stylesheet" href="{% static 'css/magicscroll.css' %}">
+<script src="{% static 'js/mscroll.js' %}"></script>
 <style>
 
 body{
 	background-color: rgb(235, 227, 227);
 }
+.i1{
+	width: 100px;
+    height: 200px;
+}
 .card {
 	  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 	  max-width: 300px;
-	  margin: auto;
+	  float: left;
 	  text-align: center;
 	  font-family: arial;
 	  background-color: white;
-	  
+      margin-right: 10px; 
+      border: 2px solid black;
 	}
-	
+.work-text{
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    size:20px;
+}
+
 </style>
 
 <div>
-		<h3 style="">home page..</h3>
-		
+		<div>
+			
+		<main>
+			<div class="intro">
+			  <h1 style="text-align:center">Art Selling Website</h1>
+			  <div class="MagicScroll" data-options="autoplay: 1000; step: 1; mode: carousel;  height: 240;">
+				<img src="media\homepage.jpg">
+				<img src="media\im1.jpg">
+				<img src="media\img2.jpg">
+				<img src="media\img3.jpg">
+				<img src="media\img4.jpg">
+				<img src="media\img5.jpg">
+				<img src="media\img6.jpg">
+			</div>
+			  <h2 style="text-align:center">welcome to my artshopy.</h2>
+			  
+			</div>
+			  <div class="work">
+				<i class="fas fa-skiing"></i>
+				<h3 style="color:darkblue; text-align:center;"> use for a ...</h3>
+				<p class="work-text">* Art is perfect to improve a home's aesthetic appeal. ...<br>
+					* Art makes homes more lively. ...<br>
+					* Art inspires people. ...<br>
+					* Buying art as a gift. ...<br>
+					* Art makes an impression. ...<br>
+					* Art offers physical and mental benefits.</p>
+			  </div>
+			  <div class="work">
+				<i class="fas fa-ethernet"></i>
+				<h3 class="work-heading" style="text-align:center; color:darkblue;">Reasons to buy a Painting</h3>
+				<p class="work-text">1.Buying an original painting supports the artist directly.  Artists pour their hearts and souls into their work, and it can be difficult sometimes to make ends meet in such a competitive field.  You should feel good knowing that when you a purchase an original painting at Think Art Gallery that supporting many local artists from Arizona.<br>
+					2. Original Paintings have the sense of touch. A print’s surface will never match the textural variations of a painting.  Whether it’s painting on canvas, paper or other mediums, original paintings have a touchable quality that set them apart.<br>
+					3. An Original Painting can make a house feel like a home. Most often when you purchase an original painting you pick it because it has some meaning to you.  Placing it and seeing it in your space gives you a feeling of comfort.<br>
+					4. Original Paintings refresh your spirit. Looking at an original painting can be a gift of daily inspiration.  Why not save up for a painting you adore?<br>
+				    5. Collecting Original Paintings. Once you have found a certain type of art or artist that you enjoy you can start your own collection.  We have quite an outstanding group of local artist’s work available at Think Art Gallery as well as many pieces that work together to create a cohesive living space.<br>
+				</p>
+			  </div>
+			</div>
+			<div class="about-me">
+			  <div class="about-me-text">
+				<h2>About Painting</h2>
+				<p></p>
+			  </div>
+			</div>
+		  </main>
+        </div>
 	  {% for i in data %} 
 	  <a href='{% url "productfilter1" i.id %}'>
 	  
-
-
 <div class="card">
 	<h2 style="text-align:center">{{i.categoryname}}</h2>
-    <img src="{{i.img.url}}"  style="width:100%"> 
+    <img class='i1' src="{{i.img.url}}"  style="width:100%"> 
 </div>
 </a>
 		{% endfor %}
+		
 </div>
+<p>
+<br><br><br></p>
 
-{% endblock %}
+<marquee behavior="scroll" direction="right"scrollamount="1" >
+    <img src="\media\200w_s.gif" width="90" height="90" alt="Flying Bee">
+    </marquee>
+	
+{% endblock %}  
 

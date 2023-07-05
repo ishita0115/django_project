@@ -1,0 +1,38 @@
+{% extends 'common.html' %}
+{% block content %}
+{% load static  %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>change password</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    
+</head>
+<body>
+  <form method="post" class="">
+    {% csrf_token %}
+    <div class="container">
+        <h1>Change Paasword</h1>
+        
+        <div class="inputFields">
+            <input type="password" name="oldpass" required="required"> 
+            <span> old Password</span>
+        </div>
+        <div class="inputFields">
+            <input type="password" name="newpass" required="required"> 
+            <span>New Password</span>
+        </div>
+        <div class="inputFields">
+            <input type="password" name="newpass1" required="required"> 
+            <span>Re-Enter New Password</span>
+        </div>
+           
+        <button class="button1">Done</button>
+    </div>
+</body>
+{% if message %}<script>alert("{{message}}")</script>{% endif %}
+</html>
+{% endblock %}

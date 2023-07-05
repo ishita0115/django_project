@@ -4,14 +4,21 @@
 {% block content %}
 <style>
 	.card {
-	  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-	  max-width: 300px;
-	  margin: auto;
-	  text-align: center;
-	  font-family: arial;
-	  
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+		max-width: 300px;
+		float: left;
+		text-align: center;
+		font-family: arial;
+		background-color: white;
+		margin-right: 10px; 
+		border: 2px solid red;
+		padding:10px;
+		margin-bottom:10px; 
 	}
-	
+	.i1{
+		width: 200px;
+		height: 200px;
+	}
 	.price {
 	  color: grey;
 	  font-size: 22px;
@@ -40,10 +47,11 @@
 	  {% for i in data %} 
 
 	  <a href='{% url "productget1" i.id %}'>
+		<div class="card">
 	  <h2 style="text-align:center">{{i.name}}</h2>
 
-<div class="card">
-  <img src="{{i.img.url}}"  style="width:100%">
+
+  <img class='i1' src="{{i.img.url}}"  style="width:100%">
   <p class="price">{{i.price}} Rs.</p>
 </div>
 </a>

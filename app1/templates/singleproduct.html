@@ -36,16 +36,19 @@
 
 <div>
 	
-	  <h2 style="text-align:center">{{data.name}}</h2>
-
+	 
+<form method='POST' action='{% url "buy" %}'>
+	 {% csrf_token %}
 <div class="card">
+	<h2 style="text-align:center">{{data.name}}</h2>
   <img src="{{data.img.url}}"  style="width:100%">
+  <input type='hidden' value="{{data.id}}" name='id'>
   <h3>quantity={{data.quantity}}</h3>
   <p class="price">{{data.price}} Rs.</p>
   <p>{{data.description}}</p> 
-  <p><button>Buy Now</button></p>
+  <p><button type='submit'>Buy Now</button></p>
 </div>
-</a>
+</form>
 </div>
 
 {% endblock %}

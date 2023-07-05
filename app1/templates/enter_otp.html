@@ -1,0 +1,47 @@
+<!--================ Start Enter OTP Area =================-->
+<!--================ Start Content Area =================-->
+{% extends 'common.html' %}
+{% block content %}
+{% load static %}
+<section class="blog-banner-area" id="category">
+   <div class="container h-100">
+      <div class="blog-banner">
+         <div class="text-center">
+            <h1>Enter OTP</h1>
+            <nav aria-label="breadcrumb" class="banner-breadcrumb">
+               <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="#">Home</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Enter OTP</li>
+               </ol>
+            </nav>
+         </div>
+      </div>
+   </div>
+</section>
+<!-- ================ End Content Area ================= -->
+
+<!--================Login Box Area =================-->
+<section class="login_box_area section-margin">
+   <div class="container">
+      <div class="row">
+         
+         <div class="col-lg-6">
+            <div class="login_form_inner">
+               <h3>Enter OTP To Forgot Password</h3>
+               <form class="row login_form" method='POST' >
+                 {% csrf_token %}
+                  <div class="col-md-12 form-group">
+                     <input type="text" name='otp' class="form-control" id="otp" placeholder="One Time Password (OTP)" onfocus="this.placeholder = ''" onblur="this.placeholder = 'One Time Password (OTP)'">
+                  </div>
+                  <div class="col-md-12 form-group">
+                     <button type="submit" value="submit" class="button  w-100">Submit OTP</button>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</section>
+<!--================End Login Box Area =================-->
+{% endblock %}
+<!--================ End Enter OTP Area =================-->

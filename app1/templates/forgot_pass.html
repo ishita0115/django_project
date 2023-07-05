@@ -1,0 +1,63 @@
+{% extends 'common.html' %}
+{% load static %}
+{% block content %}
+<html>
+
+<style>
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        background-color:rgb(242,229,224);
+      }
+      
+      * {
+        box-sizing: border-box;
+      
+      }
+      .container {
+        padding: 16px;
+        background-color: white;
+        margin: 40px auto;
+        padding:70px;
+        width: 50%;
+        min-width: 250px;
+      }
+</style>
+
+<!-- ================ End Content Area ================= -->
+<!-- Alerts -->
+<section style="padding-top: 20px;" >
+  
+</section>
+<!--================Login Box Area =================-->
+<section class="login_box_area section-margin">
+   <div class="container">
+      <div class="row">
+         <div class="col-lg-6">
+            <div class="login_box_img">
+               <div class="hover">
+                  <img style="width: 70%;" src="" alt="">
+               </div>
+            </div>
+         </div>
+         <div class="col-lg-6">
+            <div class="login_form_inner">
+               <h3>Enter Email To Forgot Password</h3>
+               <form class="row login_form" method='POST' action="{% url 'send_otp' %}">
+               {% csrf_token %}
+                  <div class="col-md-12 form-group">
+                     <input type="text" class="form-control" name='email' id="email" placeholder="Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'">
+                  </div>
+                  <div class="col-md-12 form-group">
+                    <button type="submit" value="submit" class="button  w-100">Send OTP</button>
+                 </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</section>
+</html>
+<!--================End Login Box Area =================-->
+{% endblock %}
+
+<!--================ End Forgot Password Area =================-->
