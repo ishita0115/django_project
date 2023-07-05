@@ -14,3 +14,5 @@ My project is an innovative online platform designed to facilitate the buying, s
 
 
 ![image](https://github.com/ishita0115/django_project/assets/110026650/ef18af4b-9b6d-4cde-9b06-1c0fbc81da2f)
+
+![image](https://github.com/ishita0115/django_project/assets/110026650/58773b84-05a7-4d06-95f9-77c014ad1774)
