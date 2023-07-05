@@ -26,7 +26,7 @@ product module..
 
 
 payment module..
-![image](https://github.com/ishita0115/django_project/assets/110026650/bd07ed83-df84-403e-acd3-fe4fef0a8e52)
+![image](https://github.com/ishita0115/django_project/assets/110026650/41bccc06-b9aa-4756-88fe-361e0f8868d1)
 
 
 contact us..
