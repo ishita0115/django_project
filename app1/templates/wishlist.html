@@ -1,0 +1,85 @@
+{% extends 'common.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Page Hero -->
+<div class="page-hero">
+    <h1><i class="fas fa-heart me-2" style="color:var(--accent);"></i>My Wishlist</h1>
+    <p>Your saved artworks — add them to cart when ready</p>
+</div>
+
+<section class="wishlist-section">
+    <div class="container">
+
+        {% if wishlist_items %}
+        <div class="text-center mb-4">
+            <span class="section-badge">{{ wishlist_items|length }} saved artwork{{ wishlist_items|length|pluralize }}</span>
+        </div>
+
+        <div class="row g-4">
+            {% for item in wishlist_items %}
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                <div style="background:white;border-radius:18px;overflow:hidden;box-shadow:0 4px 18px var(--shadow);border:1px solid var(--border);transition:transform 0.2s,box-shadow 0.2s;"
+                     onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 10px 30px rgba(0,0,0,0.12)'"
+                     onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 18px var(--shadow)'">
+                    <a href="{% url 'productget1' item.product.id %}" style="text-decoration:none;">
+                        <img src="{{ item.product.img.url }}" alt="{{ item.product.name }}"
+                            style="width:100%;height:220px;object-fit:cover;">
+                    </a>
+                    <div style="padding:18px;">
+                        <h5 style="font-weight:600;color:var(--secondary);font-size:0.98rem;margin-bottom:6px;">{{ item.product.name }}</h5>
+                        <div style="color:var(--primary);font-weight:700;font-size:1rem;margin-bottom:14px;">₹{{ item.product.price }}</div>
+                        {% if item.product.quantity > 0 %}
+                        <span style="font-size:0.8rem;color:#81B29A;font-weight:600;display:block;margin-bottom:12px;">
+                            <i class="fas fa-circle" style="font-size:0.5rem;margin-right:4px;"></i>In Stock
+                        </span>
+                        {% else %}
+                        <span style="font-size:0.8rem;color:#e05a5a;font-weight:600;display:block;margin-bottom:12px;">
+                            <i class="fas fa-circle" style="font-size:0.5rem;margin-right:4px;"></i>Out of Stock
+                        </span>
+                        {% endif %}
+                        <div style="display:flex;gap:8px;">
+                            <!-- Add to Cart -->
+                            {% if item.product.quantity > 0 %}
+                            <form method="POST" action="{% url 'add_to_cart' item.product.id %}" style="flex:1;">
+                                {% csrf_token %}
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit"
+                                    style="width:100%;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;border:none;border-radius:10px;padding:9px 10px;font-size:0.82rem;font-weight:600;cursor:pointer;transition:opacity 0.2s;">
+                                    <i class="fas fa-cart-plus me-1"></i>Add to Cart
+                                </button>
+                            </form>
+                            {% endif %}
+                            <!-- Remove from Wishlist -->
+                            <form method="POST" action="{% url 'remove_from_wishlist' item.product.id %}">
+                                {% csrf_token %}
+                                <button type="submit" title="Remove from Wishlist"
+                                    style="background:none;border:1px solid var(--border);border-radius:10px;padding:9px 12px;cursor:pointer;color:#e05a5a;font-size:0.9rem;transition:background 0.2s;"
+                                    onmouseover="this.style.background='#fff0f0'" onmouseout="this.style.background='none'">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% else %}
+        <!-- Empty Wishlist -->
+        <div class="wishlist-empty">
+            <i class="far fa-heart" style="font-size:4rem;color:var(--border);display:block;margin-bottom:20px;"></i>
+            <h4 style="color:var(--secondary);margin-bottom:10px;">Your wishlist is empty</h4>
+            <p style="color:var(--muted);margin-bottom:30px;">Save artworks you love by clicking the heart icon.</p>
+            <a href="{% url 'productall' %}" class="buy-now-btn" style="text-decoration:none;display:inline-flex;width:auto;padding:12px 32px;">
+                <i class="fas fa-store me-2"></i>Browse Artworks
+            </a>
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+
+{% endblock %}

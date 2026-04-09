@@ -1,0 +1,123 @@
+{% extends 'common.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Page Hero -->
+<div class="page-hero">
+    <h1><i class="fas fa-shopping-cart me-2" style="color:var(--accent);"></i>My Cart</h1>
+    <p>Review your selected artworks before checkout</p>
+</div>
+
+<section class="cart-section">
+    <div class="container">
+
+        {% if cart_items %}
+        <div class="row g-4">
+
+            <!-- Cart Items -->
+            <div class="col-lg-8">
+                {% for item in cart_items %}
+                <div class="cart-item-card">
+                    <img src="{{ item.product.img.url }}" alt="{{ item.product.name }}" class="cart-item-img">
+                    <div style="flex:1;">
+                        <div class="cart-item-name">{{ item.product.name }}</div>
+                        <div class="cart-item-price">₹{{ item.product.price }}</div>
+                        <div style="font-size:0.82rem;color:var(--muted);margin-top:2px;">
+                            Subtotal: <strong style="color:var(--secondary);">₹{{ item.get_subtotal }}</strong>
+                        </div>
+                    </div>
+                    <!-- Update Quantity -->
+                    <form method="POST" action="{% url 'update_cart' item.id %}" style="display:flex;align-items:center;gap:6px;">
+                        {% csrf_token %}
+                        <div style="display:flex;align-items:center;border:1px solid var(--border);border-radius:8px;overflow:hidden;">
+                            <button type="button" onclick="adjustQty(this, -1)" style="background:none;border:none;padding:5px 10px;cursor:pointer;font-size:1rem;color:var(--secondary);">−</button>
+                            <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="{{ item.product.quantity }}"
+                                class="cart-qty-input"
+                                style="width:48px;border:none;text-align:center;font-weight:600;font-size:0.9rem;outline:none;">
+                            <button type="button" onclick="adjustQty(this, 1)" style="background:none;border:none;padding:5px 10px;cursor:pointer;font-size:1rem;color:var(--secondary);">+</button>
+                        </div>
+                        <button type="submit" style="background:var(--primary);border:none;color:white;border-radius:8px;padding:6px 12px;font-size:0.82rem;cursor:pointer;white-space:nowrap;">
+                            Update
+                        </button>
+                    </form>
+                    <!-- Remove -->
+                    <form method="POST" action="{% url 'remove_from_cart' item.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-remove-cart" title="Remove">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </form>
+                </div>
+                {% endfor %}
+
+                <a href="{% url 'productall' %}" style="display:inline-flex;align-items:center;gap:8px;color:var(--primary);font-size:0.9rem;font-weight:500;text-decoration:none;margin-top:10px;">
+                    <i class="fas fa-arrow-left"></i> Continue Shopping
+                </a>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="col-lg-4">
+                <div class="cart-summary-card">
+                    <h5 style="font-family:'Playfair Display',serif;color:var(--secondary);margin-bottom:22px;">
+                        <i class="fas fa-receipt me-2" style="color:var(--primary);"></i>Order Summary
+                    </h5>
+                    {% for item in cart_items %}
+                    <div class="cart-total-row">
+                        <span style="color:var(--muted);font-size:0.88rem;">{{ item.product.name|truncatechars:22 }}</span>
+                        <span>₹{{ item.get_subtotal }}</span>
+                    </div>
+                    {% endfor %}
+                    <div class="cart-total-row" style="border-top:2px solid var(--border);margin-top:4px;">
+                        <span>Shipping</span>
+                        <span style="color:#81B29A;font-weight:600;">Free</span>
+                    </div>
+                    <div class="cart-total-row grand">
+                        <span>Total</span>
+                        <span style="color:var(--primary);">₹{{ total }}</span>
+                    </div>
+                    <form method="POST" action="{% url 'cart_checkout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-checkout">
+                            <i class="fas fa-lock me-2"></i>Proceed to Payment
+                        </button>
+                    </form>
+                    <div style="margin-top:16px;text-align:center;">
+                        <span style="font-size:0.78rem;color:var(--muted);">
+                            <i class="fas fa-shield-alt me-1" style="color:var(--primary);"></i>
+                            Secured by Razorpay
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        {% else %}
+        <!-- Empty Cart -->
+        <div class="text-center" style="padding:80px 20px;">
+            <i class="fas fa-shopping-cart" style="font-size:4rem;color:var(--border);margin-bottom:20px;display:block;"></i>
+            <h4 style="color:var(--secondary);margin-bottom:10px;">Your cart is empty</h4>
+            <p style="color:var(--muted);margin-bottom:30px;">Add some beautiful artworks to your cart.</p>
+            <a href="{% url 'productall' %}" class="buy-now-btn" style="text-decoration:none;display:inline-flex;width:auto;padding:12px 32px;">
+                <i class="fas fa-store me-2"></i>Browse Artworks
+            </a>
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+
+<script>
+function adjustQty(btn, delta) {
+    const container = btn.closest('form');
+    const input = container.querySelector('input[name="quantity"]');
+    const max = parseInt(input.max) || 99;
+    let val = parseInt(input.value) + delta;
+    if (val < 1) val = 1;
+    if (val > max) val = max;
+    input.value = val;
+}
+</script>
+
+{% endblock %}

@@ -9,43 +9,82 @@
     <p>Explore handcrafted masterpieces by talented Indian artists</p>
 </div>
 
-<section style="padding:70px 0 90px;background:var(--light-bg);">
+<section style="padding:50px 0 90px;background:var(--light-bg);">
     <div class="container">
 
-        {% if data %}
-        <div class="text-center mb-4">
-            <span class="section-badge">{{ data|length }} Artworks Available</span>
+        <!-- Search Bar (inline) -->
+        <div class="row mb-4">
+            <div class="col-md-6 mx-auto">
+                <form action="{% url 'search' %}" method="GET">
+                    <div class="input-group">
+                        <input type="search" name="q" class="form-control" placeholder="Search artworks by name or description…"
+                            value="{{ query|default:'' }}"
+                            style="border:1px solid var(--border);border-radius:35px 0 0 35px;padding:10px 20px;font-size:0.9rem;background:white;">
+                        <button type="submit" style="background:var(--primary);color:white;border:none;border-radius:0 35px 35px 0;padding:10px 22px;font-weight:600;font-size:0.88rem;cursor:pointer;">
+                            <i class="fas fa-search me-1"></i>Search
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
 
+        {% if query %}
+        <div class="text-center mb-3">
+            <span class="section-badge">
+                {{ data|length }} result{{ data|length|pluralize }} for "<strong>{{ query }}</strong>"
+            </span>
+            &nbsp;<a href="{% url 'productall' %}" style="font-size:0.85rem;color:var(--muted);">Clear search</a>
+        </div>
+        {% elif data %}
+        <div class="text-center mb-4">
+            <span class="section-badge">{{ data|length }} Artwork{{ data|length|pluralize }} Available</span>
+        </div>
+        {% endif %}
+
+        {% if data %}
         <div class="row g-4">
             {% for i in data %}
             <div class="col-xl-3 col-lg-4 col-md-6">
-                <a href="{% url 'productget1' i.id %}" class="product-card">
-                    <div class="product-card-img-wrap">
-                        <img src="{{ i.img.url }}" alt="{{ i.name }}">
-                        <span class="product-card-badge">Handcrafted</span>
-                    </div>
-                    <div class="product-card-body">
-                        <h5>{{ i.name }}</h5>
-                        <div class="product-price">
-                            ₹{{ i.price }} <span>/ piece</span>
+                <div class="product-card" style="position:relative;">
+                    <!-- Wishlist Heart Button -->
+                    {% if a %}
+                    <form method="POST" action="{% url 'add_to_wishlist' i.id %}" style="position:absolute;top:14px;right:14px;z-index:10;">
+                        {% csrf_token %}
+                        <button type="submit" title="Add to Wishlist"
+                            style="background:rgba(255,255,255,0.92);border:none;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.12);color:#e05a5a;font-size:1rem;transition:transform 0.2s;"
+                            onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='scale(1)'">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </form>
+                    {% endif %}
+
+                    <a href="{% url 'productget1' i.id %}" class="product-card" style="display:block;">
+                        <div class="product-card-img-wrap">
+                            <img src="{{ i.img.url }}" alt="{{ i.name }}">
+                            <span class="product-card-badge">Handcrafted</span>
                         </div>
-                    </div>
-                    <div class="product-card-footer">
-                        <span class="view-btn">
-                            View Details <i class="fas fa-arrow-right"></i>
-                        </span>
-                        {% if i.quantity > 0 %}
-                        <span style="font-size:0.8rem;color:#81B29A;font-weight:600;">
-                            <i class="fas fa-circle" style="font-size:0.5rem;margin-right:4px;"></i>In Stock
-                        </span>
-                        {% else %}
-                        <span style="font-size:0.8rem;color:#e05a5a;font-weight:600;">
-                            <i class="fas fa-circle" style="font-size:0.5rem;margin-right:4px;"></i>Sold Out
-                        </span>
-                        {% endif %}
-                    </div>
-                </a>
+                        <div class="product-card-body">
+                            <h5>{{ i.name }}</h5>
+                            <div class="product-price">
+                                ₹{{ i.price }} <span>/ piece</span>
+                            </div>
+                        </div>
+                        <div class="product-card-footer">
+                            <span class="view-btn">
+                                View Details <i class="fas fa-arrow-right"></i>
+                            </span>
+                            {% if i.quantity > 0 %}
+                            <span style="font-size:0.8rem;color:#81B29A;font-weight:600;">
+                                <i class="fas fa-circle" style="font-size:0.5rem;margin-right:4px;"></i>In Stock
+                            </span>
+                            {% else %}
+                            <span style="font-size:0.8rem;color:#e05a5a;font-weight:600;">
+                                <i class="fas fa-circle" style="font-size:0.5rem;margin-right:4px;"></i>Sold Out
+                            </span>
+                            {% endif %}
+                        </div>
+                    </a>
+                </div>
             </div>
             {% endfor %}
         </div>
@@ -54,7 +93,7 @@
         <div class="empty-state">
             <i class="fas fa-paint-brush"></i>
             <h4>No Products Found</h4>
-            <p>We're adding new artworks soon. Stay tuned!</p>
+            <p>{% if query %}Try a different search term.{% else %}We're adding new artworks soon. Stay tuned!{% endif %}</p>
             <a href="{% url 'index' %}" class="form-submit-btn" style="display:inline-block;width:auto;padding:12px 30px;margin-top:16px;text-decoration:none;">
                 <i class="fas fa-home me-2"></i>Back to Home
             </a>

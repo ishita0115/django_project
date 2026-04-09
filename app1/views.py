@@ -1,359 +1,440 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest
 from app1.models import *
 import random
 from django.conf import settings
 from django.core.mail import send_mail
-# Create your views here.
+import razorpay
+from django.views.decorators.csrf import csrf_exempt
+
+# ─── Helpers ────────────────────────────────────────────────────────────────
+
+def get_user_email(request):
+    return request.session.get('email')
+
+
+# ─── Basic / Debug ──────────────────────────────────────────────────────────
 
 def first(request):
     return HttpResponse("<h1>my first web page....</h1>")
 
-def login(request):
-    if request.method == 'POST':
-        email1=request.POST['email']
-        password1=request.POST['psw']
-        try:
-            data=UserRegister.objects.get(email=email1,password=password1)
-            if data:
-                request.session['email']=data.email
-                print(request.session['email'])
-                return redirect('index')
-            else:
-                return render(request,'login.html',{'message':'Invalid email or password'})
-        except:
-            return render(request,'login.html',{'message':'Invalid email or password'})
-    return render(request, 'login.html')
-
-def logout(request):
-    if 'email' in request.session.keys():
-        del request.session['email']
-        return redirect('index')
-    else:
-        return redirect('index')
 
 def table_all(request):
-    a=UserRegister.objects.all()   
-    print('data',a)
-    return render(request, 'table.html',{'data':a})
+    a = UserRegister.objects.all()
+    return render(request, 'table.html', {'data': a})
 
 def table_filter(request):
-    a=UserRegister.objects.filter(phone=9327058588)
-    print('data',a)
-    return render(request, 'table.html',{'data':a})
+    a = UserRegister.objects.filter(phone=9327058588)
+    return render(request, 'table.html', {'data': a})
 
 def table_all_p(request):
-    a=Product.objects.all()
-    print('data',a)
-    return render(request, 'table.html',{'data':a})
+    a = Product.objects.all()
+    return render(request, 'table.html', {'data': a})
 
 def table_filter_p(request):
-    a=Product.objects.filter(description="art")
-    print('data',a)
-    return render(request, 'table.html',{'data':a})
+    a = Product.objects.filter(description="art")
+    return render(request, 'table.html', {'data': a})
 
 def table_get(request):
-    a=Product.objects.get(price=2000)
-    print('data',a)
-    return render(request, 'table_get.html',{'data':a})
+    a = Product.objects.get(price=2000)
+    return render(request, 'table_get.html', {'data': a})
 
-def index(request):
+
+# ─── Authentication ──────────────────────────────────────────────────────────
+
+def login(request):
+    if request.method == 'POST':
+        email1 = request.POST['email']
+        password1 = request.POST['psw']
+        try:
+            data = UserRegister.objects.get(email=email1, password=password1)
+            request.session['email'] = data.email
+            return redirect('index')
+        except UserRegister.DoesNotExist:
+            return render(request, 'login.html', {'message': 'Invalid email or password'})
+    return render(request, 'login.html')
+
+
+def logout(request):
     if 'email' in request.session:
-        a=request.session['email']
-        data=Category.objects.all()
-        return render(request,'base.html',{'data':data,'a':a})
-    else:
-        data=Category.objects.all()
-        return render(request,'base.html',{'data':data})
+        del request.session['email']
+    return redirect('index')
 
-
-def productcall(request):
-    if 'email' in request.session:
-        a=request.session['email']
-        data=Product.objects.all()
-        return render(request,'productcall.html',{'data':data,'a':a})
-    else:
-        data=Product.objects.all()
-        return render(request,'productcall.html',{'data':data})
-    
-    
-
-def productcategorywise(request,id):
-    if 'email' in request.session:
-        a=request.session['email']
-        data=Product.objects.filter(Category=id)
-        return render(request,'productcall.html',{'data':data,'a':a})
-    else:
-        data=Product.objects.filter(Category=id)
-        return render(request,'productcall.html',{'data':data}) 
-  
-   
 
 def register(request):
-    if request.method=="POST":
-        name1=request.POST['username']
-        email1=request.POST['email']
-        password1=request.POST['psw']
-        phone1=request.POST['phone']
-        address1=request.POST['Address']
-        print(name1,email1,password1,address1,phone1)
-        data=UserRegister(name=name1,email=email1,password=password1,phone=phone1,address=address1)
-        a=UserRegister.objects.filter(email=email1)
-        if len(a)==0:
-            data.save()
-            return redirect('login1')
-        else:
-            return render(request,'register.html',{'message':' user already exist..'})
-    return render(request,'register.html')
+    if request.method == "POST":
+        name1 = request.POST['username']
+        email1 = request.POST['email']
+        password1 = request.POST['psw']
+        phone1 = request.POST['phone']
+        address1 = request.POST['Address']
+        if UserRegister.objects.filter(email=email1).exists():
+            return render(request, 'register.html', {'message': 'User already exists.'})
+        UserRegister(name=name1, email=email1, password=password1, phone=phone1, address=address1).save()
+        return redirect('login1')
+    return render(request, 'register.html')
 
-
-def singleproduct(request,id):
-    if 'email' in request.session:
-        a=request.session['email']
-        data=Product.objects.get(pk=id)
-        return render(request,'singleproduct.html',{'data':data,'a':a})
-    else:
-        data=Product.objects.get(pk=id)
-        return render(request,'singleproduct.html',{'data':data})
 
 def changepass(request):
-    if 'email' in request.session:
-        a=request.session['email']
-        user=UserRegister.objects.get(email=a)
-        if request.method=="POST":
-            old=request.POST['oldpass']
-            newpass=request.POST['newpass']
-            newpass1=request.POST['newpass1']
-            if old==user.password:
-                if newpass==newpass1:
-                    user.password=newpass
-                    user.save()
-                    return render(request,'changepass.html',{'message':"New password update",'a':a})
-                else:
-                    return render(request,'changepass.html',{'message':"New password not match",'a':a})
-            else:
-                return render(request,'changepass.html',{'message':"Old password not match",'a':a})
-            
-        return render(request,'changepass.html',{'a':a})
-    else:
+    if 'email' not in request.session:
         return redirect('login1')
+    a = request.session['email']
+    user = UserRegister.objects.get(email=a)
+    if request.method == "POST":
+        old = request.POST['oldpass']
+        newpass = request.POST['newpass']
+        newpass1 = request.POST['newpass1']
+        if old == user.password:
+            if newpass == newpass1:
+                user.password = newpass
+                user.save()
+                return render(request, 'changepass.html', {'message': 'Password updated successfully.', 'a': a})
+            else:
+                return render(request, 'changepass.html', {'message': 'New passwords do not match.', 'a': a})
+        else:
+            return render(request, 'changepass.html', {'message': 'Old password is incorrect.', 'a': a})
+    return render(request, 'changepass.html', {'a': a})
 
-def contact(request):
-    if 'email' in request.session:
-        a=request.session['email']
-        data=UserRegister.objects.get(email=a)
-        if request.method=="POST":
-            contact_us=Contactus()
-            contact_us.name=request.POST['name']
-            contact_us.email=request.POST['email']
-            contact_us.phone=request.POST['phone']
-            contact_us.message=request.POST['message']
-            contact_us.save()
-            return render(request,'contactus.html',{'message':"Message Sent Successfully",'a':a})
-        return render(request,'contactus.html',{'data':data,'a':a})
-    else:
-        if request.method=="POST":
-            contact_us=Contactus()
-            contact_us.name=request.POST['name']
-            contact_us.email=request.POST['email']
-            contact_us.phone=request.POST['phone']
-            contact_us.message=request.POST['message']
-            contact_us.save()
-            return render(request,'contactus.html',{'message':"Message Sent Successfully"})
-        return render(request,'contactus.html')
 
 def forgot_pass(request):
-    return render(request,'forgot_pass.html')
+    return render(request, 'forgot_pass.html')
+
 
 def send_otp(request):
-    error_message = None
-    otp = random.randint(11111,99999)
+    otp = random.randint(11111, 99999)
     email1 = request.POST.get('email')
-    user_email=UserRegister.objects.filter(email=email1)
-    if user_email:
-        user = UserRegister.objects.get(email=email1)
-        user.otp=user.save()
-        request.session['email']= request.POST['email']
-        html_msg= 'your one time password :- "+"' + str(otp)
-        subject= 'welcom to python world'
-        email_from = settings.EMAIL_HOST_USER
-        email_to = ['email']
-        message= (subject,html_msg,email_from,email_to)
-        message.send()
-        message.success(request,'otp send to your email')
+    if UserRegister.objects.filter(email=email1).exists():
+        request.session['email'] = email1
+        request.session['otp'] = str(otp)
+        subject = 'ArtShopy - Password Reset OTP'
+        html_msg = f'Your one-time password for ArtShopy is: {otp}'
+        send_mail(subject, html_msg, settings.EMAIL_HOST_USER, [email1])
         return redirect('enter_otp')
-    else:
-        error_message='invalid email pls enter correct email..'
-        return render(request,'forgot_pass.html')
+    return render(request, 'forgot_pass.html', {'error': 'Email not found.'})
 
 
 def enter_otp(request):
-    error_msg = None
-    if request.session.has_key('email'):
-        email=request.session['email']
-        user = UserRegister.objects.filter(email=email)
-        for u in user:
-            user_otp = u.otp
-            if request.method == 'POST':
-                otp = request.POST.get('otp')
-                if not otp:
-                    error_msg= 'otp requried..'
-                elif not user_otp == otp:
-                    error_msg = 'otp is invalid'
-                if not error_msg:
-                    return render(request, 'forgot_pass.html')
-            return render(request, 'enter_otp.html',{'error':error_msg})
+    if 'email' not in request.session:
+        return redirect('forgot_pass')
+    if request.method == 'POST':
+        entered_otp = request.POST.get('otp', '')
+        stored_otp = request.session.get('otp', '')
+        if entered_otp == stored_otp:
+            return redirect('change')
+        return render(request, 'enter_otp.html', {'error': 'Invalid OTP. Please try again.'})
+    return render(request, 'enter_otp.html')
+
+
+# ─── Pages ───────────────────────────────────────────────────────────────────
+
+def index(request):
+    a = get_user_email(request)
+    data = Category.objects.all()
+    return render(request, 'base.html', {'data': data, 'a': a})
+
+
+def contact(request):
+    a = get_user_email(request)
+    data = None
+    if a:
+        data = UserRegister.objects.get(email=a)
+    if request.method == "POST":
+        Contactus(
+            name=request.POST['name'],
+            email=request.POST['email'],
+            phone=request.POST['phone'],
+            message=request.POST['message'],
+        ).save()
+        return render(request, 'contactus.html', {'message': 'Message sent successfully!', 'a': a})
+    return render(request, 'contactus.html', {'data': data, 'a': a})
+
+
+# ─── Products ────────────────────────────────────────────────────────────────
+
+def productcall(request):
+    a = get_user_email(request)
+    data = Product.objects.all()
+    return render(request, 'productcall.html', {'data': data, 'a': a})
+
+
+def productcategorywise(request, id):
+    a = get_user_email(request)
+    data = Product.objects.filter(Category=id)
+    return render(request, 'productcall.html', {'data': data, 'a': a})
+
+
+def singleproduct(request, id):
+    a = get_user_email(request)
+    data = Product.objects.get(pk=id)
+    reviews = Review.objects.filter(product=data).order_by('-created_at')
+    avg_rating = data.average_rating()
+    user_review = None
+    in_wishlist = False
+    if a:
+        user_review = Review.objects.filter(product=data, user_email=a).first()
+        in_wishlist = Wishlist.objects.filter(user_email=a, product=data).exists()
+    return render(request, 'singleproduct.html', {
+        'data': data,
+        'a': a,
+        'reviews': reviews,
+        'avg_rating': avg_rating,
+        'user_review': user_review,
+        'in_wishlist': in_wishlist,
+        'star_range': range(1, 6),
+    })
+
+
+def search_products(request):
+    a = get_user_email(request)
+    query = request.GET.get('q', '').strip()
+    if query:
+        data = (Product.objects.filter(name__icontains=query) |
+                Product.objects.filter(description__icontains=query)).distinct()
+    else:
+        data = Product.objects.all()
+    return render(request, 'productcall.html', {'data': data, 'a': a, 'query': query})
+
+
+# ─── Reviews ─────────────────────────────────────────────────────────────────
+
+def add_review(request, product_id):
+    if 'email' not in request.session:
+        return redirect('login1')
+    if request.method == 'POST':
+        email = request.session['email']
+        user = UserRegister.objects.get(email=email)
+        product = Product.objects.get(id=product_id)
+        rating = int(request.POST.get('rating', 5))
+        comment = request.POST.get('comment', '').strip()
+        if comment:
+            Review.objects.update_or_create(
+                user_email=email,
+                product=product,
+                defaults={'user_name': user.name, 'rating': rating, 'comment': comment}
+            )
+    return redirect('productget1', id=product_id)
+
+
+# ─── Cart ────────────────────────────────────────────────────────────────────
+
+def cart_view(request):
+    if 'email' not in request.session:
+        return redirect('login1')
+    email = request.session['email']
+    a = email
+    cart_items = Cart.objects.filter(user_email=email).select_related('product')
+    total = sum(item.get_subtotal() for item in cart_items)
+    return render(request, 'cart.html', {'cart_items': cart_items, 'total': total, 'a': a})
+
+
+def add_to_cart(request, product_id):
+    if 'email' not in request.session:
+        return redirect('login1')
+    if request.method == 'POST':
+        email = request.session['email']
+        product = Product.objects.get(id=product_id)
+        qty = int(request.POST.get('quantity', 1))
+        cart_item, created = Cart.objects.get_or_create(user_email=email, product=product)
+        if not created:
+            cart_item.quantity += qty
         else:
-            return render(request,'forgot_pass.html')
+            cart_item.quantity = qty
+        cart_item.save()
+    return redirect('cart')
 
 
-import razorpay
-from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponseBadRequest
+def remove_from_cart(request, item_id):
+    if 'email' not in request.session:
+        return redirect('login1')
+    Cart.objects.filter(id=item_id, user_email=request.session['email']).delete()
+    return redirect('cart')
+
+
+def update_cart(request, item_id):
+    if 'email' not in request.session:
+        return redirect('login1')
+    if request.method == 'POST':
+        qty = int(request.POST.get('quantity', 1))
+        try:
+            item = Cart.objects.get(id=item_id, user_email=request.session['email'])
+            if qty > 0:
+                item.quantity = qty
+                item.save()
+            else:
+                item.delete()
+        except Cart.DoesNotExist:
+            pass
+    return redirect('cart')
+
+
+def cart_checkout(request):
+    if 'email' not in request.session:
+        return redirect('login1')
+    email = request.session['email']
+    user = UserRegister.objects.get(email=email)
+    cart_items = Cart.objects.filter(user_email=email).select_related('product')
+    if not cart_items.exists():
+        return redirect('cart')
+    total = sum(item.get_subtotal() for item in cart_items)
+    product_ids = ','.join(str(item.product.id) for item in cart_items)
+    product_qtys = ','.join(str(item.quantity) for item in cart_items)
+    request.session['productid'] = product_ids
+    request.session['quantity'] = product_qtys
+    request.session['userid'] = str(user.pk)
+    request.session['username'] = user.name
+    request.session['userEmail'] = user.email
+    request.session['userContact'] = user.phone
+    request.session['address'] = user.address
+    request.session['orderAmount'] = total
+    request.session['paymentMethod'] = 'Razorpay'
+    return redirect('razorpayView')
+
+
+# ─── Wishlist ─────────────────────────────────────────────────────────────────
+
+def wishlist_view(request):
+    if 'email' not in request.session:
+        return redirect('login1')
+    email = request.session['email']
+    wishlist_items = Wishlist.objects.filter(user_email=email).select_related('product')
+    return render(request, 'wishlist.html', {'wishlist_items': wishlist_items, 'a': email})
+
+
+def add_to_wishlist(request, product_id):
+    if 'email' not in request.session:
+        return redirect('login1')
+    email = request.session['email']
+    product = Product.objects.get(id=product_id)
+    Wishlist.objects.get_or_create(user_email=email, product=product)
+    return redirect('productget1', id=product_id)
+
+
+def remove_from_wishlist(request, product_id):
+    if 'email' not in request.session:
+        return redirect('login1')
+    Wishlist.objects.filter(user_email=request.session['email'], product_id=product_id).delete()
+    return redirect('wishlist')
+
+
+# ─── Checkout / Payment ───────────────────────────────────────────────────────
 
 def buynow(request):
-    if 'email' in request.session:
-        a=UserRegister.objects.get(email=request.session['email'])
-        if request.method=="POST":
-            request.session['productid']=request.POST['id']
-            request.session['quantity']="1"
-            request.session['userid']=a.pk
-            request.session['username']=a.name
-            request.session['userEmail']=a.email
-            request.session['userContact']=a.phone
-            request.session['address']=a.address
-            b=Product.objects.get(id=request.POST['id'])
-            request.session['orderAmount']=b.price
-            request.session['paymentMethod']="Razorpay"
-            request.session['transactionId']=""
-            return redirect('razorpayView') 
-    else:
+    if 'email' not in request.session:
         return redirect('login1')
+    a = UserRegister.objects.get(email=request.session['email'])
+    if request.method == "POST":
+        b = Product.objects.get(id=request.POST['id'])
+        request.session['productid'] = request.POST['id']
+        request.session['quantity'] = "1"
+        request.session['userid'] = str(a.pk)
+        request.session['username'] = a.name
+        request.session['userEmail'] = a.email
+        request.session['userContact'] = a.phone
+        request.session['address'] = a.address
+        request.session['orderAmount'] = b.price
+        request.session['paymentMethod'] = "Razorpay"
+        return redirect('razorpayView')
+    return redirect('index')
 
 
 RAZOR_KEY_ID = 'rzp_test_GBYBpjUCvkNBYU'
 RAZOR_KEY_SECRET = 'ovygwbvyLiGNUHFnPesOfqoC'
 client = razorpay.Client(auth=(RAZOR_KEY_ID, RAZOR_KEY_SECRET))
 
+
 def razorpayView(request):
     currency = 'INR'
-    amount = int(request.session['orderAmount'])*100
-    # Create a Razorpay Order
-    razorpay_order = client.order.create(dict(amount=amount,currency=currency,payment_capture='0'))
-    # order id of newly created order.
+    amount = int(request.session['orderAmount']) * 100
+    razorpay_order = client.order.create(dict(amount=amount, currency=currency, payment_capture='0'))
     razorpay_order_id = razorpay_order['id']
-    callback_url = 'http://127.0.0.1:8000/paymenthandler/'    
-    # we need to pass these details to frontend.
-    context = {}
-    context['razorpay_order_id'] = razorpay_order_id
-    context['razorpay_merchant_key'] = RAZOR_KEY_ID
-    context['razorpay_amount'] = amount
-    context['currency'] = currency
-    context['callback_url'] = callback_url    
-    return render(request,'razorpayDemo.html',context=context)
+    callback_url = 'http://127.0.0.1:8000/paymenthandler/'
+    context = {
+        'razorpay_order_id': razorpay_order_id,
+        'razorpay_merchant_key': RAZOR_KEY_ID,
+        'razorpay_amount': amount,
+        'currency': currency,
+        'callback_url': callback_url,
+    }
+    return render(request, 'razorpayDemo.html', context=context)
+
 
 @csrf_exempt
 def paymenthandler(request):
-    # only accept POST request.
-    if request.method == "POST":
-        try:
-            # get the required parameters from post request.
-            payment_id = request.POST.get('razorpay_payment_id', '')
-            razorpay_order_id = request.POST.get('razorpay_order_id', '')
-            signature = request.POST.get('razorpay_signature', '')
-
-            params_dict = {
-                'razorpay_order_id': razorpay_order_id,
-                'razorpay_payment_id': payment_id,
-                'razorpay_signature': signature
-            }
- 
-            # verify the payment signature.
-            result = client.utility.verify_payment_signature(
-                params_dict)
-            
-            amount = int(request.session['orderAmount'])*100  # Rs. 200
-            # capture the payemt
-            client.payment.capture(payment_id, amount)
-
-            #Order Save Code
-            orderModel = Ordermodel()
-            print(123)
-            orderModel.productid=request.session['productid']
-            print(234)
-            orderModel.productqty=request.session['quantity']
-            print(345)
-            orderModel.userId = request.session['userId']
-            print(456)
-            orderModel.userName = request.session['username']
-            print(567)
-            orderModel.userEmail = request.session['userEmail']
-            print("io")
-            orderModel.userContact = request.session['userContact']
-            print("rty")
-            orderModel.address = request.session['address']
-            print("789")
-            orderModel.orderAmount = request.session['orderAmount']
-            print("777")
-            orderModel.paymentMethod = request.session['paymentMethod']
-            print(888)
-            orderModel.transactionId = payment_id
-            print(999)
-            # productdata=Product.objects.get(id=request.session['productid'])
-            # productdata.quantity=productdata.quantity-int(request.session['quantity'])
-            # productdata.save()
-            orderModel.save()
-            orderdata=Ordermodel.objects.latest('id')
-            print(orderdata.pk)
-            cartdata=Cartmodel.objects.filter(userId=request.session['userId'])
-            for i in cartdata:
-                i.orderId=str(orderdata.pk)
-                productdata=Product.objects.get(id=i.productId)
-                productdata.quantity=productdata.quantity-int(i.quantity)
-                productdata.save()
-                i.save()
-            del request.session['productid']
-            del request.session['quantity']
-            del request.session['userId']
-            del request.session['username']
-            del request.session['userEmail']
-            del request.session['userContact']
-            del request.session['address']
-            del request.session['orderAmount']
-            del request.session['paymentMethod']
-            # render success page on successful caputre of payment
-            return redirect('orderSuccessView')
-        except:
-            print("Hello")
-            # if we don't find the required parameters in POST data
-            return HttpResponseBadRequest()
-    else:
-        print("Hello123")
-       # if other than POST request is made.
+    if request.method != "POST":
         return HttpResponseBadRequest()
+    try:
+        payment_id = request.POST.get('razorpay_payment_id', '')
+        razorpay_order_id = request.POST.get('razorpay_order_id', '')
+        signature = request.POST.get('razorpay_signature', '')
+
+        params_dict = {
+            'razorpay_order_id': razorpay_order_id,
+            'razorpay_payment_id': payment_id,
+            'razorpay_signature': signature,
+        }
+        client.utility.verify_payment_signature(params_dict)
+        amount = int(request.session['orderAmount']) * 100
+        client.payment.capture(payment_id, amount)
+
+        orderModel = Ordermodel()
+        orderModel.productid = request.session['productid']
+        orderModel.productqty = request.session['quantity']
+        orderModel.userId = request.session['userid']
+        orderModel.userName = request.session['username']
+        orderModel.userEmail = request.session['userEmail']
+        orderModel.userContact = request.session['userContact']
+        orderModel.address = request.session['address']
+        orderModel.orderAmount = request.session['orderAmount']
+        orderModel.paymentMethod = request.session['paymentMethod']
+        orderModel.transactionId = payment_id
+        orderModel.save()
+
+        # Update product stock and clear cart
+        email = request.session['userEmail']
+        cart_items = Cart.objects.filter(user_email=email)
+        for item in cart_items:
+            product = item.product
+            product.quantity = max(0, product.quantity - item.quantity)
+            product.save()
+        cart_items.delete()
+
+        # Clean up session
+        for key in ['productid', 'quantity', 'userid', 'username', 'userEmail',
+                    'userContact', 'address', 'orderAmount', 'paymentMethod']:
+            request.session.pop(key, None)
+
+        return redirect('orderSuccessView')
+    except Exception:
+        return HttpResponseBadRequest()
+
 
 def successview(request):
-    if 'email' in request.session:
-        a=request.session['email']
-        return render(request,'order_sucess.html',{'a':a})
-    else:
+    if 'email' not in request.session:
         return HttpResponseBadRequest()
-    
+    a = request.session['email']
+    return render(request, 'order_sucess.html', {'a': a})
+
+
 def orderview(request):
-    if 'email' in request.session:
-        a=request.session['email']
-        data=Ordermodel.objects.filter(userEmail=a)
-        prolist=[]
-        for i in data:
-            pro={}
-            productdata=Product.objects.get(id=i.productid)
-            pro['name']=productdata.name
-            pro['img']=productdata.img
-            pro['price']=i.orderAmount
-            pro['quantity']=i.productqty
-            pro['date']=i.orderDate
-            pro['TransactionId']=i.transactionId
-            prolist.append(pro)
-        return render(request,'ordertable.html',{'a':a,'prolist':prolist})
-    else:
-        return HttpResponseBadRequest()
+    if 'email' not in request.session:
+        return redirect('login1')
+    a = request.session['email']
+    data = Ordermodel.objects.filter(userEmail=a).order_by('-orderDate')
+    prolist = []
+    for i in data:
+        pro = {}
+        try:
+            # productid may be comma-separated for cart orders; use first id
+            pid = str(i.productid).split(',')[0]
+            productdata = Product.objects.get(id=pid)
+            pro['name'] = productdata.name
+            pro['img'] = productdata.img
+        except Exception:
+            pro['name'] = 'Unknown Product'
+            pro['img'] = None
+        pro['price'] = i.orderAmount
+        pro['quantity'] = i.productqty
+        pro['date'] = i.orderDate
+        pro['TransactionId'] = i.transactionId
+        prolist.append(pro)
+    return render(request, 'ordertable.html', {'a': a, 'prolist': prolist})

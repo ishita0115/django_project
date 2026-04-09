@@ -1,0 +1,64 @@
+{% extends 'common.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Page Hero -->
+<div class="page-hero">
+    <h1><i class="fas fa-box me-2" style="color:var(--accent);"></i>My Orders</h1>
+    <p>Track all your purchases from ArtShopy</p>
+</div>
+
+<section style="padding:60px 0 90px;background:var(--light-bg);">
+    <div class="container">
+
+        {% if prolist %}
+        <div class="row g-4">
+            {% for order in prolist %}
+            <div class="col-12">
+                <div style="background:white;border-radius:18px;padding:24px;box-shadow:0 3px 15px var(--shadow);border:1px solid var(--border);display:flex;gap:20px;align-items:center;flex-wrap:wrap;">
+                    {% if order.img %}
+                    <img src="{{ order.img.url }}" alt="{{ order.name }}"
+                        style="width:90px;height:90px;object-fit:cover;border-radius:12px;flex-shrink:0;">
+                    {% else %}
+                    <div style="width:90px;height:90px;background:var(--light-bg);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <i class="fas fa-image" style="color:var(--border);font-size:1.8rem;"></i>
+                    </div>
+                    {% endif %}
+                    <div style="flex:1;min-width:200px;">
+                        <h5 style="font-weight:600;color:var(--secondary);margin-bottom:4px;">{{ order.name }}</h5>
+                        <p style="font-size:0.85rem;color:var(--muted);margin-bottom:6px;">
+                            Qty: {{ order.quantity }} &nbsp;|&nbsp; Amount: <strong style="color:var(--primary);">₹{{ order.price }}</strong>
+                        </p>
+                        <p style="font-size:0.82rem;color:var(--muted);margin:0;">
+                            <i class="fas fa-calendar-alt me-1"></i>{{ order.date|date:"d M Y, H:i" }}
+                        </p>
+                    </div>
+                    <div style="text-align:right;min-width:160px;">
+                        <span style="background:rgba(129,178,154,0.15);color:#4a8c6c;font-size:0.8rem;font-weight:600;padding:5px 14px;border-radius:20px;display:inline-block;margin-bottom:8px;">
+                            <i class="fas fa-check-circle me-1"></i>Paid
+                        </span>
+                        <p style="font-size:0.78rem;color:var(--muted);margin:0;word-break:break-all;">
+                            TXN: {{ order.TransactionId|truncatechars:20 }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% else %}
+        <div class="text-center" style="padding:80px 20px;">
+            <i class="fas fa-box-open" style="font-size:4rem;color:var(--border);display:block;margin-bottom:20px;"></i>
+            <h4 style="color:var(--secondary);margin-bottom:10px;">No orders yet</h4>
+            <p style="color:var(--muted);margin-bottom:30px;">Your completed orders will appear here.</p>
+            <a href="{% url 'productall' %}" class="buy-now-btn" style="text-decoration:none;display:inline-flex;width:auto;padding:12px 32px;">
+                <i class="fas fa-store me-2"></i>Browse Artworks
+            </a>
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+
+{% endblock %}
