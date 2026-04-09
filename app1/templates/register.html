@@ -1,125 +1,117 @@
 {% extends 'common.html' %}
+{% load static %}
+
 {% block content %}
 
+<div class="auth-page" style="padding:50px 0;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-7">
+                <div class="auth-card" style="max-width:620px;">
+                    <!-- Header -->
+                    <div style="text-align:center;margin-bottom:30px;">
+                        <div style="width:64px;height:64px;background:linear-gradient(135deg,#C9622F,#D4A843);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:26px;color:white;box-shadow:0 8px 22px rgba(201,98,47,0.35);">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <h2>Join ArtShopy</h2>
+                        <p class="subtitle">Create your account to start collecting art</p>
+                    </div>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  background-color:rgb(242,229,224);
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom">
+                                        <i class="fas fa-user me-1" style="color:var(--primary);"></i> Full Name
+                                    </label>
+                                    <input type="text" class="form-input-custom" name="username" placeholder="Your full name" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom">
+                                        <i class="fas fa-envelope me-1" style="color:var(--primary);"></i> Email
+                                    </label>
+                                    <input type="email" class="form-input-custom" name="email" placeholder="you@example.com" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom">
+                                        <i class="fas fa-phone me-1" style="color:var(--primary);"></i> Phone Number
+                                    </label>
+                                    <input type="tel" class="form-input-custom" name="phone" placeholder="+91 00000 00000" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom">
+                                        <i class="fas fa-map-marker-alt me-1" style="color:var(--primary);"></i> Delivery Address
+                                    </label>
+                                    <input type="text" class="form-input-custom" name="Address" placeholder="Your address" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom">
+                                        <i class="fas fa-lock me-1" style="color:var(--primary);"></i> Password
+                                    </label>
+                                    <input type="password" class="form-input-custom" name="psw" id="psw1" placeholder="Create password" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom">
+                                        <i class="fas fa-lock me-1" style="color:var(--primary);"></i> Confirm Password
+                                    </label>
+                                    <input type="password" class="form-input-custom" name="psw-repeat" id="psw2" placeholder="Repeat password" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="passError" style="display:none;color:#e05a5a;font-size:0.85rem;margin-bottom:12px;padding:10px 14px;background:#fff5f5;border-radius:10px;border-left:4px solid #e05a5a;">
+                            <i class="fas fa-exclamation-circle me-1"></i> Passwords do not match.
+                        </div>
+
+                        <button type="submit" class="form-submit-btn" onclick="return checkPass()">
+                            <i class="fas fa-user-plus me-2"></i>Create My Account
+                        </button>
+                    </form>
+
+                    <div class="form-footer-link">
+                        Already have an account? <a href="{% url 'login1' %}">Sign in here</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if message %}
+<div style="position:fixed;top:90px;right:20px;z-index:9999;">
+    <div style="background:#fff;border-left:4px solid #C9622F;border-radius:12px;padding:16px 22px;box-shadow:0 8px 30px rgba(0,0,0,0.14);max-width:320px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+            <i class="fas fa-info-circle" style="color:#C9622F;font-size:1.2rem;"></i>
+            <div>
+                <p style="margin:0;font-weight:600;color:#333;font-size:0.9rem;">Notice</p>
+                <p style="margin:0;color:#8B7355;font-size:0.83rem;">{{ message }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<script>
+function checkPass() {
+    const p1 = document.getElementById('psw1').value;
+    const p2 = document.getElementById('psw2').value;
+    if (p1 !== p2) {
+        document.getElementById('passError').style.display = 'block';
+        return false;
+    }
+    return true;
 }
-
-* {
-  box-sizing: border-box;
-
-}
-
-/* Add padding to containers */
-.container {
-  padding: 16px;
-  background-color: white;
-  margin: 40px auto;
-  padding:70px;
-  width: 50%;
-  min-width: 250px;
-}
-
-/* Full-width input fields */
-input[type=text], input[type=password] {
-  width: 100%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  display: inline-block;
-  border: none;
-  background: #f1f1f1;
-}
-
-input[type=text]:focus, input[type=password]:focus {
-  background-color: #ddd;
-  outline: none;
-}
-
-/* Overwrite default styles of hr */
-hr {
-  border: 1px solid #f1f1f1;
-  margin-bottom: 25px;
-}
-
-/* Set a style for the submit button */
-.registerbtn {
-  background-color: #04AA6D;
-  color: white;
-  padding: 16px 18px;
-  margin: 4px 0;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  opacity: 0.9;
-}
-
-.registerbtn:hover {
-  opacity: 1;
-}
-
-/* Add a blue text color to links */
-a {
-  color: dodgerblue;
-}
-
-/* Set a grey background color and center the text of the "sign in" section */
-.signin {
-  background-color: #f1f1f1;
-  text-align: center;
-  width: 100%;
-  padding: 10px 12px;
-  margin: 8px 0;
-}
-</style>
-</head>
-<body>
-
-<form method="post" class="">
-    {% csrf_token %}
-  <div class="container">
-    
-    <h1>Register</h1>
-    <p>Please fill in this form to create an account.</p>
-    <hr>
-    <label for="username"><b>username</b></label>
-    <input type="text" placeholder="Enter username" name="username" id="username" required>
-
-    <label for="email"><b>Email</b></label>
-    <input type="text" placeholder="Enter Email" name="email" id="email" required>
-
-    <label for="phone"><b>phone</b></label>
-    <input type="text" placeholder="Enter phone no" name="phone" id="phone" required>
-
-    <label for="Address"><b>Address</b></label>
-    <input type="text" placeholder="Enter Adress" name="Address" id="Address" required>
-
-    <label for="psw"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
-
-    <label for="psw-repeat"><b>Repeat Password</b></label>
-    <input type="password" placeholder="Repeat Password" name="psw-repeat" id="psw-repeat" required>
-    <hr>
-
-    <button type="submit" class="registerbtn">Register</button>
-
-    <div class="container signin">
-        <p>Already have an account? <a href="#">Sign in</a>.</p>
-      </div>
-  </div>
-  
-  
-</form>
-{% if message %}<script>alert("{{message}}")</script>{% endif %}
-
-</body>
-</html>
-
+</script>
 
 {% endblock %}

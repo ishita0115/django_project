@@ -1,63 +1,42 @@
 {% extends 'common.html' %}
 {% load static %}
+
 {% block content %}
-<html>
 
-<style>
-    body {
-        font-family: Arial, Helvetica, sans-serif;
-        background-color:rgb(242,229,224);
-      }
-      
-      * {
-        box-sizing: border-box;
-      
-      }
-      .container {
-        padding: 16px;
-        background-color: white;
-        margin: 40px auto;
-        padding:70px;
-        width: 50%;
-        min-width: 250px;
-      }
-</style>
+<div class="auth-page">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-5">
+                <div class="auth-card">
+                    <div style="text-align:center;margin-bottom:28px;">
+                        <div style="width:64px;height:64px;background:linear-gradient(135deg,#C9622F,#D4A843);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:26px;color:white;box-shadow:0 8px 22px rgba(201,98,47,0.35);">
+                            <i class="fas fa-paper-plane"></i>
+                        </div>
+                        <h2>Forgot Password?</h2>
+                        <p class="subtitle">No worries — we'll send you a one-time password to reset it.</p>
+                    </div>
 
-<!-- ================ End Content Area ================= -->
-<!-- Alerts -->
-<section style="padding-top: 20px;" >
-  
-</section>
-<!--================Login Box Area =================-->
-<section class="login_box_area section-margin">
-   <div class="container">
-      <div class="row">
-         <div class="col-lg-6">
-            <div class="login_box_img">
-               <div class="hover">
-                  <img style="width: 70%;" src="" alt="">
-               </div>
+                    <form method="POST" action="{% url 'send_otp' %}">
+                        {% csrf_token %}
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">
+                                <i class="fas fa-envelope me-1" style="color:var(--primary);"></i> Registered Email Address
+                            </label>
+                            <input type="email" class="form-input-custom" name="email" placeholder="you@example.com" required>
+                        </div>
+
+                        <button type="submit" class="form-submit-btn">
+                            <i class="fas fa-paper-plane me-2"></i>Send OTP
+                        </button>
+                    </form>
+
+                    <div class="form-footer-link">
+                        Remembered your password? <a href="{% url 'login1' %}">Log in</a>
+                    </div>
+                </div>
             </div>
-         </div>
-         <div class="col-lg-6">
-            <div class="login_form_inner">
-               <h3>Enter Email To Forgot Password</h3>
-               <form class="row login_form" method='POST' action="{% url 'send_otp' %}">
-               {% csrf_token %}
-                  <div class="col-md-12 form-group">
-                     <input type="text" class="form-control" name='email' id="email" placeholder="Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'">
-                  </div>
-                  <div class="col-md-12 form-group">
-                    <button type="submit" value="submit" class="button  w-100">Send OTP</button>
-                 </div>
-               </form>
-            </div>
-         </div>
-      </div>
-   </div>
-</section>
-</html>
-<!--================End Login Box Area =================-->
+        </div>
+    </div>
+</div>
+
 {% endblock %}
-
-<!--================ End Forgot Password Area =================-->

@@ -1,100 +1,121 @@
-
 {% extends 'common.html' %}
+{% load static %}
 
 {% block content %}
-{% load static  %}
 <link rel="stylesheet" href="{% static 'css/magicscroll.css' %}">
 <script src="{% static 'js/mscroll.js' %}"></script>
-<style>
 
-body{
-	background-color: rgb(235, 227, 227);
-}
-.i1{
-	width: 100px;
-    height: 200px;
-}
-.card {
-	  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-	  max-width: 300px;
-	  float: left;
-	  text-align: center;
-	  font-family: arial;
-	  background-color: white;
-      margin-right: 10px; 
-      border: 2px solid black;
-	}
-.work-text{
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    size:20px;
-}
-
-</style>
-
-<div>
-		<div>
-			
-		<main>
-			<div class="intro">
-			  <h1 style="text-align:center">Art Selling Website</h1>
-			  <div class="MagicScroll" data-options="autoplay: 1000; step: 1; mode: carousel;  height: 240;">
-				<img src="media\homepage.jpg">
-				<img src="media\im1.jpg">
-				<img src="media\img2.jpg">
-				<img src="media\img3.jpg">
-				<img src="media\img4.jpg">
-				<img src="media\img5.jpg">
-				<img src="media\img6.jpg">
-			</div>
-			  <h2 style="text-align:center">welcome to my artshopy.</h2>
-			  
-			</div>
-			  <div class="work">
-				<i class="fas fa-skiing"></i>
-				<h3 style="color:darkblue; text-align:center;"> use for a ...</h3>
-				<p class="work-text">* Art is perfect to improve a home's aesthetic appeal. ...<br>
-					* Art makes homes more lively. ...<br>
-					* Art inspires people. ...<br>
-					* Buying art as a gift. ...<br>
-					* Art makes an impression. ...<br>
-					* Art offers physical and mental benefits.</p>
-			  </div>
-			  <div class="work">
-				<i class="fas fa-ethernet"></i>
-				<h3 class="work-heading" style="text-align:center; color:darkblue;">Reasons to buy a Painting</h3>
-				<p class="work-text">1.Buying an original painting supports the artist directly.  Artists pour their hearts and souls into their work, and it can be difficult sometimes to make ends meet in such a competitive field.  You should feel good knowing that when you a purchase an original painting at Think Art Gallery that supporting many local artists from Arizona.<br>
-					2. Original Paintings have the sense of touch. A print’s surface will never match the textural variations of a painting.  Whether it’s painting on canvas, paper or other mediums, original paintings have a touchable quality that set them apart.<br>
-					3. An Original Painting can make a house feel like a home. Most often when you purchase an original painting you pick it because it has some meaning to you.  Placing it and seeing it in your space gives you a feeling of comfort.<br>
-					4. Original Paintings refresh your spirit. Looking at an original painting can be a gift of daily inspiration.  Why not save up for a painting you adore?<br>
-				    5. Collecting Original Paintings. Once you have found a certain type of art or artist that you enjoy you can start your own collection.  We have quite an outstanding group of local artist’s work available at Think Art Gallery as well as many pieces that work together to create a cohesive living space.<br>
-				</p>
-			  </div>
-			</div>
-			<div class="about-me">
-			  <div class="about-me-text">
-				<h2>About Painting</h2>
-				<p></p>
-			  </div>
-			</div>
-		  </main>
+<!-- ===== HERO / CAROUSEL ===== -->
+<section class="hero-wrapper" style="position:relative;">
+    <div class="MagicScroll" data-options="autoplay:2500; step:1; mode:carousel; height:520; loop:1;">
+        <img src="/media/homepage.jpg" alt="Art 1">
+        <img src="/media/im1.jpg"      alt="Art 2">
+        <img src="/media/img2.jpg"     alt="Art 3">
+        <img src="/media/img3.jpg"     alt="Art 4">
+        <img src="/media/img4.jpg"     alt="Art 5">
+        <img src="/media/img5.jpg"     alt="Art 6">
+        <img src="/media/img6.jpg"     alt="Art 7">
+    </div>
+    <!-- Overlay text -->
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.25) 0%,rgba(0,0,0,0.55) 100%);display:flex;align-items:center;justify-content:center;z-index:5;pointer-events:none;">
+        <div style="text-align:center;color:#fff;">
+            <span style="background:rgba(212,168,67,0.25);border:1.5px solid rgba(212,168,67,0.6);color:#f2cc8f;font-size:0.8rem;font-weight:600;letter-spacing:3px;text-transform:uppercase;padding:6px 20px;border-radius:20px;display:inline-block;margin-bottom:18px;">Welcome to ArtShopy</span>
+            <h1 style="font-family:'Playfair Display',serif;font-size:3.4rem;font-weight:700;text-shadow:0 3px 20px rgba(0,0,0,0.5);margin-bottom:12px;">Authentic <span style="color:#D4A843;">Handcrafted</span> Art</h1>
+            <p style="font-size:1.15rem;opacity:0.88;text-shadow:0 2px 8px rgba(0,0,0,0.4);margin-bottom:28px;">Discover the soul of India through timeless artwork</p>
+            <a href="{% url 'productall' %}" style="background:linear-gradient(135deg,#C9622F,#A04E24);color:#fff;border:none;padding:14px 38px;border-radius:35px;font-family:'Poppins',sans-serif;font-weight:700;font-size:1rem;text-decoration:none;display:inline-flex;align-items:center;gap:8px;box-shadow:0 6px 22px rgba(201,98,47,0.45);pointer-events:all;transition:transform 0.3s;">
+                <i class="fas fa-store"></i> Explore Art
+            </a>
         </div>
-	  {% for i in data %} 
-	  <a href='{% url "productfilter1" i.id %}'>
-	  
-<div class="card">
-	<h2 style="text-align:center">{{i.categoryname}}</h2>
-    <img class='i1' src="{{i.img.url}}"  style="width:100%"> 
-</div>
-</a>
-		{% endfor %}
-		
-</div>
-<p>
-<br><br><br></p>
+    </div>
+</section>
 
-<marquee behavior="scroll" direction="right"scrollamount="1" >
-    <img src="\media\200w_s.gif" width="90" height="90" alt="Flying Bee">
-    </marquee>
-	
-{% endblock %}  
+<!-- ===== WHY CHOOSE US ===== -->
+<section class="benefits-section">
+    <div class="container">
+        <div class="text-center mb-2">
+            <span class="section-badge">Why Choose Us</span>
+        </div>
+        <h2 class="section-title text-center">The <span>Art</span> of Gifting</h2>
+        <div class="section-divider"></div>
+        <div class="row g-4">
+            <div class="col-md-3 col-sm-6">
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-hand-holding-heart"></i></div>
+                    <h5>Handcrafted Quality</h5>
+                    <p>Every piece is made by skilled artisans using traditional techniques passed down through generations.</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-leaf"></i></div>
+                    <h5>Eco-Friendly</h5>
+                    <p>We use natural dyes and sustainable materials to protect both art traditions and our environment.</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-truck-fast"></i></div>
+                    <h5>Safe Delivery</h5>
+                    <p>Artworks are carefully packed and delivered safely to your doorstep anywhere in India.</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-certificate"></i></div>
+                    <h5>Certified Authentic</h5>
+                    <p>Each artwork comes with an authenticity certificate signed by the originating artist.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
+<!-- ===== CATEGORIES ===== -->
+<section class="categories-section">
+    <div class="container">
+        <div class="text-center mb-2">
+            <span class="section-badge">Collections</span>
+        </div>
+        <h2 class="section-title text-center">Shop by <span>Category</span></h2>
+        <div class="section-divider"></div>
+
+        {% if data %}
+        <div class="row g-4">
+            {% for i in data %}
+            <div class="col-lg-4 col-md-6">
+                <a href="{% url 'productfilter1' i.id %}" class="category-card">
+                    <img src="{{ i.img.url }}" alt="{{ i.categoryname }}">
+                    <div class="category-overlay">
+                        <h5>{{ i.categoryname }}</h5>
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-images"></i>
+            <h4>Categories coming soon</h4>
+            <p>We're adding new art categories. Check back shortly!</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- ===== ABOUT BANNER ===== -->
+<section style="padding:90px 0;background:linear-gradient(135deg,#2C3E50 0%,#5a3020 100%);color:white;text-align:center;position:relative;overflow:hidden;">
+    <div style="position:absolute;inset:0;opacity:0.04;background-image:url('data:image/svg+xml,%3Csvg width=\'80\' height=\'80\' viewBox=\'0 0 80 80\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M40 0L80 40L40 80L0 40Z\' fill=\'%23fff\'/%3E%3C/svg%3E');background-size:80px 80px;"></div>
+    <div class="container" style="position:relative;z-index:2;">
+        <span class="section-badge" style="background:rgba(212,168,67,0.2);color:#f2cc8f;border:1px solid rgba(212,168,67,0.4);">Our Story</span>
+        <h2 style="font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:700;margin:14px 0 18px;">Art That Speaks to the Soul</h2>
+        <p style="max-width:680px;margin:0 auto 35px;opacity:0.82;line-height:1.85;font-size:1rem;">
+            ArtShopy was born from a love of India's rich artistic heritage. We connect passionate collectors with gifted artisans who pour their heart into every stroke. From vibrant Pithora paintings to intricate Lippan work — discover art that transforms spaces.
+        </p>
+        <a href="{% url 'contact' %}" style="border:2px solid rgba(212,168,67,0.7);color:#f2cc8f;background:transparent;padding:13px 34px;border-radius:35px;font-family:'Poppins',sans-serif;font-weight:600;font-size:0.95rem;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all 0.3s;">
+            <i class="fas fa-envelope"></i> Get in Touch
+        </a>
+    </div>
+</section>
+
+{% endblock %}

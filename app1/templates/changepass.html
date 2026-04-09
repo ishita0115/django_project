@@ -1,38 +1,116 @@
 {% extends 'common.html' %}
+{% load static %}
+
 {% block content %}
-{% load static  %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>change password</title>
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
-    
-</head>
-<body>
-  <form method="post" class="">
-    {% csrf_token %}
+
+<div class="auth-page">
     <div class="container">
-        <h1>Change Paasword</h1>
-        
-        <div class="inputFields">
-            <input type="password" name="oldpass" required="required"> 
-            <span> old Password</span>
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-5">
+                <div class="auth-card">
+                    <div style="text-align:center;margin-bottom:28px;">
+                        <div style="width:64px;height:64px;background:linear-gradient(135deg,#C9622F,#D4A843);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:26px;color:white;box-shadow:0 8px 22px rgba(201,98,47,0.35);">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <h2>Change Password</h2>
+                        <p class="subtitle">Keep your account secure with a strong password</p>
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">
+                                <i class="fas fa-lock me-1" style="color:var(--primary);"></i> Current Password
+                            </label>
+                            <div style="position:relative;">
+                                <input type="password" class="form-input-custom" name="oldpass" id="oldpass" placeholder="Enter current password" required style="padding-right:48px;">
+                                <button type="button" onclick="toggleField('oldpass','eye1')" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;">
+                                    <i class="fas fa-eye" id="eye1"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <hr class="form-divider">
+
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">
+                                <i class="fas fa-lock me-1" style="color:var(--primary);"></i> New Password
+                            </label>
+                            <div style="position:relative;">
+                                <input type="password" class="form-input-custom" name="newpass" id="newpass" placeholder="Enter new password" required style="padding-right:48px;">
+                                <button type="button" onclick="toggleField('newpass','eye2')" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;">
+                                    <i class="fas fa-eye" id="eye2"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group-custom">
+                            <label class="form-label-custom">
+                                <i class="fas fa-lock me-1" style="color:var(--primary);"></i> Confirm New Password
+                            </label>
+                            <div style="position:relative;">
+                                <input type="password" class="form-input-custom" name="newpass1" id="newpass1" placeholder="Repeat new password" required style="padding-right:48px;">
+                                <button type="button" onclick="toggleField('newpass1','eye3')" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;">
+                                    <i class="fas fa-eye" id="eye3"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="passError" style="display:none;color:#e05a5a;font-size:0.85rem;margin-bottom:12px;padding:10px 14px;background:#fff5f5;border-radius:10px;border-left:4px solid #e05a5a;">
+                            <i class="fas fa-exclamation-circle me-1"></i> New passwords don't match. Please try again.
+                        </div>
+
+                        <button type="submit" class="form-submit-btn" onclick="return verifyPass()">
+                            <i class="fas fa-check-circle me-2"></i>Update Password
+                        </button>
+                    </form>
+
+                    <div class="form-footer-link">
+                        <a href="{% url 'index' %}"><i class="fas fa-arrow-left me-1"></i>Back to Home</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="inputFields">
-            <input type="password" name="newpass" required="required"> 
-            <span>New Password</span>
-        </div>
-        <div class="inputFields">
-            <input type="password" name="newpass1" required="required"> 
-            <span>Re-Enter New Password</span>
-        </div>
-           
-        <button class="button1">Done</button>
     </div>
-</body>
-{% if message %}<script>alert("{{message}}")</script>{% endif %}
-</html>
+</div>
+
+{% if message %}
+<div style="position:fixed;top:90px;right:20px;z-index:9999;animation:fadeDown 0.3s ease;">
+    <div style="background:#fff;border-left:4px solid {% if 'success' in message|lower %}#81B29A{% else %}#C9622F{% endif %};border-radius:12px;padding:16px 22px;box-shadow:0 8px 30px rgba(0,0,0,0.14);max-width:320px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+            <i class="fas fa-info-circle" style="color:var(--primary);font-size:1.2rem;"></i>
+            <div>
+                <p style="margin:0;font-weight:600;color:#333;font-size:0.9rem;">Notice</p>
+                <p style="margin:0;color:#8B7355;font-size:0.83rem;">{{ message }}</p>
+            </div>
+            <button onclick="this.parentElement.parentElement.parentElement.remove()" style="background:none;border:none;color:#ccc;margin-left:auto;cursor:pointer;">✕</button>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<script>
+function toggleField(fieldId, iconId) {
+    const field = document.getElementById(fieldId);
+    const icon = document.getElementById(iconId);
+    if (field.type === 'password') {
+        field.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+    } else {
+        field.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+    }
+}
+
+function verifyPass() {
+    const p1 = document.getElementById('newpass').value;
+    const p2 = document.getElementById('newpass1').value;
+    if (p1 !== p2) {
+        document.getElementById('passError').style.display = 'block';
+        return false;
+    }
+    return true;
+}
+</script>
+
 {% endblock %}

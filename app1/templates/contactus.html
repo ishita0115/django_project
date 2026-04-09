@@ -1,126 +1,143 @@
 {% extends 'common.html' %}
+{% load static %}
+
 {% block content %}
 
+<!-- Page Hero -->
+<div class="page-hero">
+    <h1><i class="fas fa-envelope-open-text me-2" style="color:var(--accent);"></i>Contact Us</h1>
+    <p>We'd love to hear from you — reach out anytime</p>
+</div>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  background-color:rgb(242,229,224);
-}
+<section class="contact-section" style="padding-top:60px;">
+    <div class="container">
+        <div class="row g-4 align-items-stretch">
 
-* {
-  box-sizing: border-box;
+            <!-- Info Card -->
+            <div class="col-lg-4">
+                <div class="contact-info-card">
+                    <h3>Get in Touch</h3>
+                    <p>Whether you have a question about our art, need custom orders, or want to collaborate — we're here to help.</p>
 
-}
+                    <div class="contact-info-item">
+                        <div class="ci-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div>
+                            <small>Our Location</small>
+                            <span>Gujarat, India</span>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <div class="ci-icon"><i class="fas fa-phone"></i></div>
+                        <div>
+                            <small>Phone Number</small>
+                            <span>+91 93270 58588</span>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <div class="ci-icon"><i class="fas fa-envelope"></i></div>
+                        <div>
+                            <small>Email Address</small>
+                            <span>info@artshopy.com</span>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <div class="ci-icon"><i class="fas fa-clock"></i></div>
+                        <div>
+                            <small>Working Hours</small>
+                            <span>Mon–Sat: 9am – 6pm</span>
+                        </div>
+                    </div>
 
-/* Add padding to containers */
-.container {
-  padding: 16px;
-  background-color: white;
-  margin: 40px auto;
-  padding:70px;
-  width: 50%;
-  min-width: 250px;
-}
+                    <div class="social-links mt-4">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                    </div>
+                </div>
+            </div>
 
-/* Full-width input fields */
-input[type=text], input[type=password] {
-  width: 100%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  display: inline-block;
-  border: none;
-  background: #f1f1f1;
-}
+            <!-- Form Card -->
+            <div class="col-lg-8">
+                <div class="contact-form-card">
+                    <h3>Send a Message</h3>
+                    <p class="subtitle">Fill in the form below and we'll get back to you within 24 hours.</p>
 
-input[type=text]:focus, input[type=password]:focus {
-  background-color: #ddd;
-  outline: none;
-}
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            {% if a %}
+                            <div class="col-md-6">
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom"><i class="fas fa-user me-1" style="color:var(--primary);"></i> Your Name</label>
+                                    <input type="text" class="form-input-custom" name="name" value="{{ data.name }}" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom"><i class="fas fa-envelope me-1" style="color:var(--primary);"></i> Email</label>
+                                    <input type="email" class="form-input-custom" name="email" value="{{ data.email }}" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom"><i class="fas fa-phone me-1" style="color:var(--primary);"></i> Phone Number</label>
+                                    <input type="tel" class="form-input-custom" name="phone" value="{{ data.phone }}" placeholder="Your phone number" required>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="col-md-6">
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom"><i class="fas fa-user me-1" style="color:var(--primary);"></i> Your Name</label>
+                                    <input type="text" class="form-input-custom" name="name" placeholder="Enter your name" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom"><i class="fas fa-envelope me-1" style="color:var(--primary);"></i> Email</label>
+                                    <input type="email" class="form-input-custom" name="email" placeholder="you@example.com" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom"><i class="fas fa-phone me-1" style="color:var(--primary);"></i> Phone Number</label>
+                                    <input type="tel" class="form-input-custom" name="phone" placeholder="+91 00000 00000" required>
+                                </div>
+                            </div>
+                            {% endif %}
+                            <div class="col-12">
+                                <div class="form-group-custom">
+                                    <label class="form-label-custom"><i class="fas fa-comment-dots me-1" style="color:var(--primary);"></i> Your Message</label>
+                                    <textarea class="form-input-custom" name="message" rows="5" placeholder="Tell us how we can help you..." required style="resize:vertical;"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="form-submit-btn">
+                                    <i class="fas fa-paper-plane me-2"></i>Send Message
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
-/* Overwrite default styles of hr */
-hr {
-  border: 1px solid #f1f1f1;
-  margin-bottom: 25px;
-}
+        </div>
+    </div>
+</section>
 
-/* Set a style for the submit button */
-.registerbtn {
-  background-color: #04AA6D;
-  color: white;
-  padding: 16px 18px;
-  margin: 4px 0;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  opacity: 0.9;
-}
-
-.registerbtn:hover {
-  opacity: 1;
-}
-
-/* Add a blue text color to links */
-a {
-  color: dodgerblue;
-}
-
-/* Set a grey background color and center the text of the "sign in" section */
-.signin {
-  background-color: #f1f1f1;
-  text-align: center;
-  width: 100%;
-  padding: 10px 12px;
-  margin: 8px 0;
-}
-</style>
-</head>
-<body>
-
-<form method="post" class="">
-    {% csrf_token %}
-    {% if a %}
-  <div class="container">
-    
-    <h1>Contact Us</h1>
-
-    <hr>
-    <label for="username"><b>username</b></label>
-    <input type="text" value={{data.name}} name="name" id="username" required=''readonly>
-
-    <label for="email"><b>Email</b></label>
-    <input type="text" value={{data.email}} name="email" id="email" required=''readonly>
-
-    <label for="phone"><b>phone</b></label>
-    <input type="text" value={{data.phone}} name="phone" id="phone" required>
-
-    <label for="message"><b>message</b></label>
-    <input type="text" placeholder="message" name="message" id="message" required>
-     {% else %}
-     <label for="username"><b>username</b></label>
-     <input type="text" placeholder="username" name="name" id="username" required>
- 
-     <label for="email"><b>Email</b></label>
-     <input type="text" placeholder="Email" name="email" id="email" required>
- 
-     <label for="phone"><b>phone</b></label>
-     <input type="text" placeholder="phone " name="phone" id="phone" required>
- 
-     <label for="message"><b>message</b></label>
-     <input type="text" placeholder="message" name="message" id="message" required>
-     {% endif %}
-
-    <button type="submit" class="registerbtn">contact us now</button>
-  
-</form>
-{% if message %}<script>alert("{{message}}")</script>{% endif %}
-
-</body>
-</html>
-
+{% if message %}
+<div style="position:fixed;top:90px;right:20px;z-index:9999;animation:fadeDown 0.3s ease;">
+    <div style="background:#fff;border-left:4px solid #81B29A;border-radius:12px;padding:16px 22px;box-shadow:0 8px 30px rgba(0,0,0,0.14);max-width:320px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+            <i class="fas fa-check-circle" style="color:#81B29A;font-size:1.3rem;"></i>
+            <div>
+                <p style="margin:0;font-weight:600;color:#333;font-size:0.9rem;">Message Sent!</p>
+                <p style="margin:0;color:#8B7355;font-size:0.83rem;">{{ message }}</p>
+            </div>
+            <button onclick="this.parentElement.parentElement.parentElement.remove()" style="background:none;border:none;color:#ccc;margin-left:auto;cursor:pointer;">✕</button>
+        </div>
+    </div>
+</div>
+{% endif %}
 
 {% endblock %}

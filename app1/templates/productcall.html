@@ -1,62 +1,67 @@
-
 {% extends 'common.html' %}
+{% load static %}
 
 {% block content %}
-<style>
-	.card {
-		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-		max-width: 300px;
-		float: left;
-		text-align: center;
-		font-family: arial;
-		background-color: white;
-		margin-right: 10px; 
-		border: 2px solid red;
-		padding:10px;
-		margin-bottom:10px; 
-	}
-	.i1{
-		width: 200px;
-		height: 200px;
-	}
-	.price {
-	  color: grey;
-	  font-size: 22px;
-	}
-	
-	.card button {
-	  border: none;
-	  outline: 0;
-	  padding: 12px;
-	  color: white;
-	  background-color: #000;
-	  text-align: center;
-	  cursor: pointer;
-	  width: 100%;
-	  font-size: 18px;
-	}
-	
-	.card button:hover {
-	  opacity: 0.7;
-	}
-</style>
 
-<div>
-		<h3 style=""> product is like...</h3>
-		
-	  {% for i in data %} 
-
-	  <a href='{% url "productget1" i.id %}'>
-		<div class="card">
-	  <h2 style="text-align:center">{{i.name}}</h2>
-
-
-  <img class='i1' src="{{i.img.url}}"  style="width:100%">
-  <p class="price">{{i.price}} Rs.</p>
+<!-- Page Hero -->
+<div class="page-hero">
+    <h1><i class="fas fa-store me-2" style="color:var(--accent);"></i>Our Art Collection</h1>
+    <p>Explore handcrafted masterpieces by talented Indian artists</p>
 </div>
-</a>
-		{% endfor %}
-</div>
+
+<section style="padding:70px 0 90px;background:var(--light-bg);">
+    <div class="container">
+
+        {% if data %}
+        <div class="text-center mb-4">
+            <span class="section-badge">{{ data|length }} Artworks Available</span>
+        </div>
+
+        <div class="row g-4">
+            {% for i in data %}
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                <a href="{% url 'productget1' i.id %}" class="product-card">
+                    <div class="product-card-img-wrap">
+                        <img src="{{ i.img.url }}" alt="{{ i.name }}">
+                        <span class="product-card-badge">Handcrafted</span>
+                    </div>
+                    <div class="product-card-body">
+                        <h5>{{ i.name }}</h5>
+                        <div class="product-price">
+                            ₹{{ i.price }} <span>/ piece</span>
+                        </div>
+                    </div>
+                    <div class="product-card-footer">
+                        <span class="view-btn">
+                            View Details <i class="fas fa-arrow-right"></i>
+                        </span>
+                        {% if i.quantity > 0 %}
+                        <span style="font-size:0.8rem;color:#81B29A;font-weight:600;">
+                            <i class="fas fa-circle" style="font-size:0.5rem;margin-right:4px;"></i>In Stock
+                        </span>
+                        {% else %}
+                        <span style="font-size:0.8rem;color:#e05a5a;font-weight:600;">
+                            <i class="fas fa-circle" style="font-size:0.5rem;margin-right:4px;"></i>Sold Out
+                        </span>
+                        {% endif %}
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-paint-brush"></i>
+            <h4>No Products Found</h4>
+            <p>We're adding new artworks soon. Stay tuned!</p>
+            <a href="{% url 'index' %}" class="form-submit-btn" style="display:inline-block;width:auto;padding:12px 30px;margin-top:16px;text-decoration:none;">
+                <i class="fas fa-home me-2"></i>Back to Home
+            </a>
+        </div>
+        {% endif %}
+
+    </div>
+</section>
 
 {% endblock %}
-

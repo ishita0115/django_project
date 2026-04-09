@@ -1,0 +1,987 @@
+/* ===================================================
+   ArtShopy - Main Stylesheet
+   Theme: Warm Terracotta & Gold (Indian Handcraft)
+=================================================== */
+
+:root {
+    --primary: #C9622F;
+    --primary-dark: #A04E24;
+    --secondary: #2C3E50;
+    --accent: #D4A843;
+    --light-bg: #FDF6EC;
+    --card-bg: #FFFFFF;
+    --text: #333333;
+    --muted: #8B7355;
+    --border: #E8DDD0;
+    --success: #81B29A;
+    --shadow: rgba(0, 0, 0, 0.08);
+}
+
+/* ---- BASE ---- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--light-bg);
+    color: var(--text);
+    line-height: 1.7;
+}
+
+/* ---- SCROLLBAR ---- */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--light-bg); }
+::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+
+/* ===================================================
+   NAVBAR
+=================================================== */
+#mainNav {
+    background: linear-gradient(135deg, rgba(44,62,80,0.97) 0%, rgba(100,50,20,0.92) 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: all 0.35s ease;
+    padding: 14px 0;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.15);
+    z-index: 1050;
+}
+
+#mainNav.scrolled {
+    padding: 8px 0;
+    background: linear-gradient(135deg, rgba(44,62,80,1) 0%, rgba(80,35,10,1) 100%);
+    box-shadow: 0 4px 30px rgba(0,0,0,0.25);
+}
+
+.navbar-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #fff !important;
+    letter-spacing: 1px;
+}
+
+.navbar-brand i { color: var(--accent); }
+
+.nav-link {
+    color: rgba(255,255,255,0.88) !important;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 7px 14px !important;
+    border-radius: 8px;
+    transition: all 0.25s ease;
+}
+
+.nav-link:hover {
+    color: #fff !important;
+    background: rgba(255,255,255,0.12);
+}
+
+.btn-nav-outline {
+    border: 2px solid rgba(255,255,255,0.6) !important;
+    border-radius: 25px !important;
+    padding: 6px 20px !important;
+}
+
+.btn-nav-outline:hover {
+    background: rgba(255,255,255,0.15) !important;
+    border-color: rgba(255,255,255,0.9) !important;
+}
+
+.btn-nav-fill {
+    background: var(--accent) !important;
+    color: var(--secondary) !important;
+    border-radius: 25px !important;
+    font-weight: 600 !important;
+    padding: 6px 20px !important;
+    transition: all 0.3s !important;
+}
+
+.btn-nav-fill:hover {
+    background: #e8b84d !important;
+    color: var(--secondary) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 5px 18px rgba(212,168,67,0.45);
+}
+
+.navbar-toggler {
+    border-color: rgba(255,255,255,0.4);
+}
+
+.dropdown-menu {
+    background: white;
+    border: none;
+    border-radius: 14px;
+    box-shadow: 0 12px 45px rgba(0,0,0,0.14);
+    overflow: hidden;
+    min-width: 200px;
+    animation: fadeDown 0.2s ease;
+}
+
+@keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.dropdown-item {
+    padding: 11px 22px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text);
+    transition: all 0.2s;
+}
+
+.dropdown-item:hover {
+    background: var(--light-bg);
+    color: var(--primary);
+    padding-left: 28px;
+}
+
+.dropdown-item.text-danger:hover {
+    background: #fff5f5;
+    color: #dc3545 !important;
+}
+
+/* ===================================================
+   PAGE WRAPPER
+=================================================== */
+.page-wrapper {
+    padding-top: 76px;
+    min-height: 80vh;
+}
+
+/* ===================================================
+   SECTION HELPERS
+=================================================== */
+.section-badge {
+    display: inline-block;
+    background: rgba(201,98,47,0.12);
+    color: var(--primary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 16px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+}
+
+.section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.3rem;
+    font-weight: 700;
+    color: var(--secondary);
+    margin-bottom: 10px;
+}
+
+.section-title span { color: var(--primary); }
+
+.section-divider {
+    width: 55px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    border-radius: 3px;
+    margin: 0 auto 45px;
+}
+
+.section-divider.left-align { margin: 0 0 45px; }
+
+/* ===================================================
+   HOME PAGE - HERO / CAROUSEL
+=================================================== */
+.hero-wrapper {
+    background: var(--secondary);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-text-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.hero-text-overlay h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.2rem;
+    font-weight: 700;
+    color: white;
+    text-shadow: 0 3px 20px rgba(0,0,0,0.6);
+    line-height: 1.2;
+}
+
+.hero-text-overlay p {
+    font-size: 1.15rem;
+    color: rgba(255,255,255,0.9);
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    margin-top: 10px;
+}
+
+/* ===================================================
+   BENEFITS SECTION
+=================================================== */
+.benefits-section {
+    padding: 90px 0;
+    background: white;
+}
+
+.benefit-card {
+    text-align: center;
+    padding: 36px 24px;
+    border-radius: 20px;
+    transition: all 0.35s ease;
+    height: 100%;
+    border: 2px solid transparent;
+}
+
+.benefit-card:hover {
+    background: var(--light-bg);
+    border-color: var(--border);
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(201,98,47,0.12);
+}
+
+.benefit-icon {
+    width: 72px;
+    height: 72px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 22px;
+    font-size: 28px;
+    color: white;
+    box-shadow: 0 8px 20px rgba(201,98,47,0.3);
+    transition: transform 0.3s;
+}
+
+.benefit-card:hover .benefit-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.benefit-card h5 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: var(--secondary);
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.benefit-card p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.75;
+}
+
+/* ===================================================
+   CATEGORIES SECTION
+=================================================== */
+.categories-section {
+    padding: 90px 0;
+    background: var(--light-bg);
+}
+
+.category-card {
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+    transition: all 0.35s ease;
+    text-decoration: none;
+    display: block;
+    height: 210px;
+}
+
+.category-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.45s ease;
+}
+
+.category-card:hover img { transform: scale(1.1); }
+
+.category-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(44,62,80,0.8) 0%, transparent 60%);
+    display: flex;
+    align-items: flex-end;
+    padding: 22px;
+    transition: background 0.3s;
+}
+
+.category-card:hover .category-overlay {
+    background: linear-gradient(to top, rgba(201,98,47,0.75) 0%, transparent 60%);
+}
+
+.category-overlay h5 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: white;
+    margin: 0;
+}
+
+.category-overlay i {
+    margin-left: auto;
+    color: var(--accent);
+    font-size: 1.1rem;
+    transition: transform 0.3s;
+}
+
+.category-card:hover .category-overlay i {
+    transform: translateX(5px);
+}
+
+.category-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.18);
+}
+
+/* ===================================================
+   PRODUCT CARDS
+=================================================== */
+.products-section {
+    padding: 90px 0;
+    background: white;
+}
+
+.product-card {
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px var(--shadow);
+    transition: all 0.35s ease;
+    text-decoration: none;
+    color: var(--text);
+    display: block;
+    height: 100%;
+    border: 1px solid var(--border);
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 22px 55px rgba(201,98,47,0.18);
+    color: var(--text);
+    border-color: var(--primary);
+}
+
+.product-card-img-wrap {
+    overflow: hidden;
+    height: 220px;
+    position: relative;
+}
+
+.product-card-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.45s ease;
+}
+
+.product-card:hover .product-card-img-wrap img {
+    transform: scale(1.07);
+}
+
+.product-card-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--primary);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+}
+
+.product-card-body {
+    padding: 20px;
+}
+
+.product-card-body h5 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: var(--secondary);
+    margin-bottom: 10px;
+    font-size: 1.05rem;
+}
+
+.product-price {
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 1.15rem;
+}
+
+.product-price span {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--muted);
+    margin-left: 2px;
+}
+
+.product-card-footer {
+    padding: 0 20px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.view-btn {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--primary);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: gap 0.2s;
+}
+
+.product-card:hover .view-btn { gap: 8px; }
+
+/* ===================================================
+   SINGLE PRODUCT PAGE
+=================================================== */
+.single-product-section {
+    padding: 60px 0 90px;
+}
+
+.single-product-img-wrap {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 12px 50px rgba(0,0,0,0.14);
+}
+
+.single-product-img-wrap img {
+    width: 100%;
+    height: 450px;
+    object-fit: cover;
+}
+
+.single-product-info {
+    padding-left: 40px;
+}
+
+.single-product-info h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--secondary);
+    margin-bottom: 12px;
+}
+
+.single-product-price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 20px;
+}
+
+.single-product-price small {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--muted);
+}
+
+.stock-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(129,178,154,0.15);
+    color: #4a8c6a;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+}
+
+.product-description {
+    color: var(--muted);
+    line-height: 1.85;
+    margin-bottom: 30px;
+    border-left: 4px solid var(--accent);
+    padding-left: 18px;
+}
+
+.buy-now-btn {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    border: none;
+    padding: 14px 40px;
+    border-radius: 35px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: all 0.35s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 6px 20px rgba(201,98,47,0.3);
+}
+
+.buy-now-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(201,98,47,0.45);
+    color: white;
+}
+
+/* ===================================================
+   FORM PAGES (Login, Register, etc.)
+=================================================== */
+.auth-page {
+    min-height: calc(100vh - 76px);
+    background: linear-gradient(135deg, var(--light-bg) 0%, #f0e6d8 100%);
+    display: flex;
+    align-items: center;
+    padding: 40px 0;
+}
+
+.auth-card {
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 14px 55px rgba(0,0,0,0.1);
+    padding: 52px 46px;
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+
+.auth-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--secondary);
+    margin-bottom: 6px;
+}
+
+.auth-card .subtitle {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-bottom: 32px;
+}
+
+.form-group-custom { margin-bottom: 20px; }
+
+.form-label-custom {
+    font-weight: 600;
+    color: var(--secondary);
+    font-size: 0.875rem;
+    display: block;
+    margin-bottom: 7px;
+}
+
+.form-input-custom {
+    width: 100%;
+    padding: 13px 18px;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    color: var(--text);
+    background: #fafafa;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.form-input-custom:focus {
+    border-color: var(--primary);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(201,98,47,0.1);
+}
+
+.form-input-custom[readonly] {
+    background: var(--light-bg);
+    color: var(--muted);
+    cursor: not-allowed;
+}
+
+.form-submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    border: none;
+    border-radius: 35px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.35s ease;
+    margin-top: 8px;
+    letter-spacing: 0.3px;
+}
+
+.form-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(201,98,47,0.42);
+}
+
+.form-footer-link {
+    text-align: center;
+    margin-top: 22px;
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+
+.form-footer-link a {
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.form-footer-link a:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+.form-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 24px 0;
+}
+
+.forgot-link {
+    float: right;
+    font-size: 0.85rem;
+    color: var(--muted);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.forgot-link:hover { color: var(--primary); }
+
+/* ===================================================
+   CONTACT PAGE
+=================================================== */
+.contact-section {
+    padding: 80px 0;
+    background: var(--light-bg);
+}
+
+.contact-info-card {
+    background: linear-gradient(135deg, var(--secondary), #1a252f);
+    border-radius: 24px;
+    padding: 50px 40px;
+    color: white;
+    height: 100%;
+}
+
+.contact-info-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    margin-bottom: 12px;
+}
+
+.contact-info-card p {
+    opacity: 0.8;
+    font-size: 0.95rem;
+    margin-bottom: 30px;
+}
+
+.contact-info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.contact-info-item .ci-icon {
+    width: 42px;
+    height: 42px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.contact-info-item div small {
+    opacity: 0.65;
+    font-size: 0.8rem;
+    display: block;
+}
+
+.contact-info-item div span {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.contact-form-card {
+    background: white;
+    border-radius: 24px;
+    padding: 50px 40px;
+    box-shadow: 0 12px 45px rgba(0,0,0,0.08);
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-form-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+}
+
+.contact-form-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--secondary);
+    margin-bottom: 8px;
+}
+
+.contact-form-card .subtitle {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 30px;
+}
+
+/* ===================================================
+   SUCCESS PAGE
+=================================================== */
+.success-section {
+    padding: 100px 0;
+    text-align: center;
+    background: var(--light-bg);
+}
+
+.success-icon-wrap {
+    width: 110px;
+    height: 110px;
+    background: linear-gradient(135deg, var(--success), #5a9a7a);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 50px;
+    color: white;
+    margin: 0 auto 30px;
+    animation: popIn 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 12px 40px rgba(129,178,154,0.4);
+}
+
+@keyframes popIn {
+    0% { transform: scale(0); opacity: 0; }
+    70% { transform: scale(1.12); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.success-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--secondary);
+    margin-bottom: 12px;
+}
+
+.success-section p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    margin-bottom: 35px;
+}
+
+/* ===================================================
+   PAGE HERO BANNER (inner pages)
+=================================================== */
+.page-hero {
+    background: linear-gradient(135deg, var(--secondary) 0%, #5a3020 100%);
+    padding: 60px 0 50px;
+    text-align: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.page-hero::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 40px;
+    background: var(--light-bg);
+    clip-path: ellipse(55% 100% at 50% 100%);
+}
+
+.page-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 15px rgba(0,0,0,0.3);
+}
+
+.page-hero p {
+    opacity: 0.8;
+    font-size: 1rem;
+}
+
+/* ===================================================
+   FILTER BAR (products page)
+=================================================== */
+.filter-bar {
+    background: white;
+    border-radius: 16px;
+    padding: 20px 28px;
+    box-shadow: 0 4px 20px var(--shadow);
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.filter-bar h5 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: var(--secondary);
+    margin: 0;
+    font-size: 1.05rem;
+}
+
+/* ===================================================
+   FOOTER
+=================================================== */
+.site-footer {
+    background: linear-gradient(135deg, var(--secondary), #1e2d3d);
+    color: rgba(255,255,255,0.78);
+    padding: 65px 0 30px;
+}
+
+.site-footer h5 {
+    font-family: 'Playfair Display', serif;
+    color: white;
+    font-size: 1.2rem;
+    margin-bottom: 22px;
+}
+
+.site-footer h5 i { color: var(--accent); }
+
+.site-footer p { font-size: 0.9rem; line-height: 1.85; }
+
+.footer-links { list-style: none; padding: 0; }
+
+.footer-links li { margin-bottom: 10px; }
+
+.footer-links li a {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.25s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.footer-links li a::before {
+    content: '›';
+    color: var(--accent);
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.footer-links li a:hover {
+    color: var(--accent);
+    padding-left: 4px;
+}
+
+.footer-contact-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    font-size: 0.9rem;
+}
+
+.footer-contact-item i {
+    color: var(--accent);
+    font-size: 0.95rem;
+    width: 18px;
+}
+
+.social-links { display: flex; gap: 10px; margin-top: 4px; }
+
+.social-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border: 1.5px solid rgba(255,255,255,0.25);
+    border-radius: 50%;
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    transition: all 0.3s;
+    font-size: 0.85rem;
+}
+
+.social-links a:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--secondary);
+    transform: translateY(-2px);
+}
+
+.site-footer hr { border-color: rgba(255,255,255,0.12); margin: 35px 0 22px; }
+
+.footer-bottom { font-size: 0.85rem; text-align: center; opacity: 0.65; }
+
+.footer-bottom i { color: #e05a5a; }
+
+/* ===================================================
+   MISC / UTILITIES
+=================================================== */
+.empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--muted);
+}
+
+.empty-state i {
+    font-size: 4rem;
+    color: var(--border);
+    margin-bottom: 20px;
+}
+
+.empty-state h4 { color: var(--secondary); margin-bottom: 10px; }
+
+/* ===================================================
+   RESPONSIVE
+=================================================== */
+@media (max-width: 991px) {
+    .single-product-info { padding-left: 0; margin-top: 30px; }
+    .contact-info-card { margin-bottom: 30px; }
+}
+
+@media (max-width: 768px) {
+    .page-hero h1 { font-size: 2rem; }
+    .section-title { font-size: 1.8rem; }
+    .auth-card { padding: 38px 26px; margin: 0 15px; }
+    .contact-form-card { padding: 38px 26px; }
+    .contact-info-card { padding: 38px 26px; }
+    .single-product-img-wrap img { height: 300px; }
+    .single-product-info h2 { font-size: 1.7rem; }
+    .hero-text-overlay h1 { font-size: 1.8rem; }
+}

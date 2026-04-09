@@ -1,39 +1,85 @@
 {% extends 'common.html' %}
+{% load static %}
+
 {% block content %}
-{% load static  %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
-    <script src="{% static 'js/login.js' %}"></script>
-</head>
-<body>
-  <form method="post" class="">
-    {% csrf_token %}
+
+<div class="auth-page">
     <div class="container">
-        <h1>Log in</h1>
-        <div class="inputFields">
-            <input type="text" name="email" required="required">
-            <span>email</span>
-        </div>
-        <div class="inputFields">
-            <input type="password" name="psw" required="required"> 
-            <span>Password</span>
-        </div>
-            <div class="links">
-                <a href="{% url 'forgot_pass' %}" class="forgotten" onclick="alert('Check your email for confirmation!')">Forgot Pass.</a> 
-                <a href="{% url 'register1' %}">Sign up</a> <br>
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-5">
+                <div class="auth-card">
+                    <!-- Icon -->
+                    <div style="text-align:center;margin-bottom:28px;">
+                        <div style="width:64px;height:64px;background:linear-gradient(135deg,#C9622F,#D4A843);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:26px;color:white;box-shadow:0 8px 22px rgba(201,98,47,0.35);">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <h2>Welcome Back</h2>
+                        <p class="subtitle">Log in to explore our handcrafted collections</p>
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group-custom">
+                            <label class="form-label-custom" for="email">
+                                <i class="fas fa-envelope me-1" style="color:var(--primary);"></i> Email Address
+                            </label>
+                            <input type="email" class="form-input-custom" id="email" name="email" placeholder="you@example.com" required>
+                        </div>
+
+                        <div class="form-group-custom">
+                            <label class="form-label-custom" for="psw">
+                                <i class="fas fa-lock me-1" style="color:var(--primary);"></i> Password
+                                <a href="{% url 'forgot_pass' %}" class="forgot-link">Forgot password?</a>
+                            </label>
+                            <div style="position:relative;">
+                                <input type="password" class="form-input-custom" id="psw" name="psw" placeholder="Enter your password" required style="padding-right:48px;">
+                                <button type="button" onclick="togglePass()" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.95rem;">
+                                    <i class="fas fa-eye" id="eyeIcon"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="form-submit-btn">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login to ArtShopy
+                        </button>
+                    </form>
+
+                    <div class="form-footer-link">
+                        Don't have an account? <a href="{% url 'register1' %}">Create one free</a>
+                    </div>
+                </div>
             </div>
-        <button class="button1">Login</button>
+        </div>
     </div>
-</body>
-{% if message %}<script>alert("{{message}}")</script>{% endif %}
-</html>
+</div>
+
+{% if message %}
+<div style="position:fixed;top:90px;right:20px;z-index:9999;animation:fadeDown 0.3s ease;">
+    <div style="background:#fff;border-left:4px solid #C9622F;border-radius:12px;padding:16px 22px;box-shadow:0 8px 30px rgba(0,0,0,0.14);max-width:320px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+            <i class="fas fa-exclamation-circle" style="color:#C9622F;font-size:1.2rem;"></i>
+            <div>
+                <p style="margin:0;font-weight:600;color:#333;font-size:0.9rem;">Login Failed</p>
+                <p style="margin:0;color:#8B7355;font-size:0.83rem;">{{ message }}</p>
+            </div>
+            <button onclick="this.parentElement.parentElement.parentElement.remove()" style="background:none;border:none;color:#ccc;margin-left:auto;cursor:pointer;font-size:1rem;">✕</button>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<script>
+function togglePass() {
+    const input = document.getElementById('psw');
+    const icon = document.getElementById('eyeIcon');
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+    } else {
+        input.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+    }
+}
+</script>
+
 {% endblock %}
-
-
-

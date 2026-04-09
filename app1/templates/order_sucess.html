@@ -1,18 +1,50 @@
-{% extends 'base.html' %}
+{% extends 'common.html' %}
 {% load static %}
 
 {% block content %}
 
+<section class="success-section">
+    <div class="container">
+        <div class="success-icon-wrap">
+            <i class="fas fa-check"></i>
+        </div>
+        <h2>Order Successfully Placed!</h2>
+        <p>Thank you for your purchase. Your handcrafted artwork is on its way!</p>
+        <p style="font-size:0.9rem;color:var(--muted);margin-bottom:35px;">You'll receive an email confirmation shortly with your order details and tracking information.</p>
 
-    <section class="signup">
-        <div class="container">
-            <div class="signup-content">
-                <div class="signup-form">
-                    <h2 class="form-title">Order Sucessfully Placed</h2>
+        <!-- Action Buttons -->
+        <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+            <a href="{% url 'index' %}" style="background:linear-gradient(135deg,#C9622F,#A04E24);color:white;padding:13px 32px;border-radius:35px;text-decoration:none;font-weight:700;font-size:0.95rem;display:inline-flex;align-items:center;gap:8px;box-shadow:0 8px 25px rgba(201,98,47,0.35);transition:transform 0.3s;">
+                <i class="fas fa-home"></i> Back to Home
+            </a>
+            <a href="{% url 'productall' %}" style="background:white;color:var(--secondary);border:2px solid var(--border);padding:13px 32px;border-radius:35px;text-decoration:none;font-weight:600;font-size:0.95rem;display:inline-flex;align-items:center;gap:8px;transition:all 0.3s;">
+                <i class="fas fa-store"></i> Continue Shopping
+            </a>
+        </div>
+
+        <!-- Confetti-like decorative divs -->
+        <div style="margin-top:50px;padding:28px 40px;background:white;border-radius:20px;box-shadow:0 6px 25px rgba(0,0,0,0.07);max-width:540px;margin-left:auto;margin-right:auto;border:1px solid var(--border);">
+            <h5 style="font-family:'Playfair Display',serif;color:var(--secondary);margin-bottom:18px;">What's Next?</h5>
+            <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:14px;">
+                <div style="width:32px;height:32px;background:rgba(201,98,47,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <i class="fas fa-envelope" style="color:var(--primary);font-size:0.8rem;"></i>
                 </div>
+                <p style="margin:0;font-size:0.9rem;color:var(--muted);padding-top:6px;">Order confirmation email will be sent to your registered email address.</p>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:14px;">
+                <div style="width:32px;height:32px;background:rgba(201,98,47,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <i class="fas fa-box" style="color:var(--primary);font-size:0.8rem;"></i>
+                </div>
+                <p style="margin:0;font-size:0.9rem;color:var(--muted);padding-top:6px;">Your artwork will be carefully packed and dispatched within 2-3 business days.</p>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:14px;">
+                <div style="width:32px;height:32px;background:rgba(201,98,47,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <i class="fas fa-truck" style="color:var(--primary);font-size:0.8rem;"></i>
+                </div>
+                <p style="margin:0;font-size:0.9rem;color:var(--muted);padding-top:6px;">Estimated delivery: 5–7 business days depending on your location.</p>
             </div>
         </div>
-    </section>
-
+    </div>
+</section>
 
 {% endblock %}

@@ -1,55 +1,104 @@
-
 {% extends 'common.html' %}
+{% load static %}
 
 {% block content %}
-<style>
-	.card {
-	  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-	  max-width: 300px;
-	  margin: auto;
-	  text-align: center;
-	  font-family: arial;
-	  
-	}
-	
-	.price {
-	  color: grey;
-	  font-size: 22px;
-	}
-	
-	.card button {
-	  border: none;
-	  outline: 0;
-	  padding: 12px;
-	  color: white;
-	  background-color: #000;
-	  text-align: center;
-	  cursor: pointer;
-	  width: 100%;
-	  font-size: 18px;
-	}
-	
-	.card button:hover {
-	  opacity: 0.7;
-	}
-</style>
 
-<div>
-	
-	 
-<form method='POST' action='{% url "buy" %}'>
-	 {% csrf_token %}
-<div class="card">
-	<h2 style="text-align:center">{{data.name}}</h2>
-  <img src="{{data.img.url}}"  style="width:100%">
-  <input type='hidden' value="{{data.id}}" name='id'>
-  <h3>quantity={{data.quantity}}</h3>
-  <p class="price">{{data.price}} Rs.</p>
-  <p>{{data.description}}</p> 
-  <p><button type='submit'>Buy Now</button></p>
+<!-- Breadcrumb -->
+<div style="background:white;border-bottom:1px solid var(--border);padding:14px 0;">
+    <div class="container">
+        <nav style="font-size:0.88rem;color:var(--muted);">
+            <a href="{% url 'index' %}" style="color:var(--primary);text-decoration:none;font-weight:500;">Home</a>
+            <span style="margin:0 8px;color:var(--border);">›</span>
+            <a href="{% url 'productall' %}" style="color:var(--primary);text-decoration:none;font-weight:500;">Products</a>
+            <span style="margin:0 8px;color:var(--border);">›</span>
+            <span>{{ data.name }}</span>
+        </nav>
+    </div>
 </div>
-</form>
-</div>
+
+<section class="single-product-section">
+    <div class="container">
+        <div class="row align-items-start g-5">
+
+            <!-- Product Image -->
+            <div class="col-lg-6">
+                <div class="single-product-img-wrap">
+                    <img src="{{ data.img.url }}" alt="{{ data.name }}">
+                </div>
+            </div>
+
+            <!-- Product Info -->
+            <div class="col-lg-6">
+                <div class="single-product-info">
+                    <span class="section-badge">Handcrafted Art</span>
+                    <h2>{{ data.name }}</h2>
+
+                    <div class="single-product-price">
+                        ₹{{ data.price }} <small>/ piece</small>
+                    </div>
+
+                    <!-- Stock -->
+                    {% if data.quantity > 0 %}
+                    <div class="stock-badge">
+                        <i class="fas fa-check-circle"></i>
+                        In Stock — {{ data.quantity }} piece{{ data.quantity|pluralize }} available
+                    </div>
+                    {% else %}
+                    <div class="stock-badge" style="background:rgba(224,90,90,0.1);color:#c94040;">
+                        <i class="fas fa-times-circle"></i> Out of Stock
+                    </div>
+                    {% endif %}
+
+                    <!-- Description -->
+                    <p class="product-description">{{ data.description }}</p>
+
+                    <!-- Features -->
+                    <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:30px;">
+                        <div style="display:flex;align-items:center;gap:8px;font-size:0.88rem;color:var(--muted);">
+                            <i class="fas fa-hand-holding-heart" style="color:var(--primary);"></i> Handmade
+                        </div>
+                        <div style="display:flex;align-items:center;gap:8px;font-size:0.88rem;color:var(--muted);">
+                            <i class="fas fa-leaf" style="color:var(--primary);"></i> Natural Materials
+                        </div>
+                        <div style="display:flex;align-items:center;gap:8px;font-size:0.88rem;color:var(--muted);">
+                            <i class="fas fa-certificate" style="color:var(--primary);"></i> Authentic
+                        </div>
+                        <div style="display:flex;align-items:center;gap:8px;font-size:0.88rem;color:var(--muted);">
+                            <i class="fas fa-truck" style="color:var(--primary);"></i> Safe Delivery
+                        </div>
+                    </div>
+
+                    <!-- Buy Button -->
+                    {% if data.quantity > 0 %}
+                    <form method="POST" action="{% url 'buy' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="id" value="{{ data.id }}">
+                        <button type="submit" class="buy-now-btn">
+                            <i class="fas fa-shopping-cart"></i> Buy Now
+                        </button>
+                    </form>
+                    {% else %}
+                    <button class="buy-now-btn" disabled style="opacity:0.5;cursor:not-allowed;">
+                        <i class="fas fa-times"></i> Out of Stock
+                    </button>
+                    {% endif %}
+
+                    <!-- Trust Badges -->
+                    <div style="margin-top:28px;padding:20px;background:var(--light-bg);border-radius:14px;border:1px solid var(--border);">
+                        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                            <i class="fas fa-shield-alt" style="color:var(--primary);font-size:1.1rem;"></i>
+                            <span style="font-size:0.88rem;font-weight:600;color:var(--secondary);">Secure Payment via Razorpay</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:10px;">
+                            <i class="fas fa-undo-alt" style="color:var(--primary);font-size:1.1rem;"></i>
+                            <span style="font-size:0.88rem;color:var(--muted);">Easy returns within 7 days</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
 
 {% endblock %}
-
