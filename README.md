@@ -93,31 +93,6 @@ django_project/
 
 ---
 
-## Setup & Run
-
-```bash
-# 1. Clone the repository
-git clone https://github.com/ishita0115/django_project.git
-cd django_project
-
-# 2. Create and activate virtual environment
-python -m venv venv
-source venv/bin/activate        # Linux/Mac
-venv\Scripts\activate           # Windows
-
-# 3. Install dependencies
-pip install django pillow razorpay
-
-# 4. Apply migrations
-python manage.py migrate
-
-# 5. Create a superuser (for admin panel)
-python manage.py createsuperuser
-
-# 6. Run the development server
-python manage.py runserver
-```
-
 Open [http://127.0.0.1:8000](http://127.0.0.1:8000) in your browser.
 
 ---
